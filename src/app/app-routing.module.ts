@@ -21,6 +21,10 @@ const routes: Routes = [
     redirectTo: 'login',
     pathMatch: 'full'
   },
+  {
+    path: 'new-project',
+    loadChildren: () => import('./pages/new-project/new-project.module').then( m => m.NewProjectPageModule)
+  },
 ];
 
 @NgModule({
