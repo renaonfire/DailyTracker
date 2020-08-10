@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 })
 export class AuthService {
 
-  authState = new BehaviorSubject(true);
+  authState = new BehaviorSubject(false);
 
   constructor(private auth: AngularFireAuth, private alertCtrl: AlertController, private router: Router) { }
 

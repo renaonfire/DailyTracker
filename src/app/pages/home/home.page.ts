@@ -11,7 +11,11 @@ export class HomePage {
   constructor(private router: Router) {}
 
   onStartProject() {
-    this.router.navigateByUrl('/new-project');
+    this.router.navigateByUrl('/main/new-project');
+  }
+
+  onShowLatestProject() {
+    this.router.navigateByUrl('/home');
   }
 
 }
