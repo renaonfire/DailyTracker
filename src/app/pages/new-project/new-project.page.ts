@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { ModalController } from '@ionic/angular';
+import { NewProjectPageModule } from './new-project.module';
+import { NewDayModalPage } from '../new-day-modal/new-day-modal.page';
 
 @Component({
   selector: 'app-new-project',
@@ -9,9 +12,20 @@ export class NewProjectPage implements OnInit {
 
   name;
 
-  constructor() { }
+  constructor(private modalCtrl: ModalController) { }
 
   ngOnInit() {
   }
 
+  onAddDay() {
+    this.onPresentModal();
+  }
+
+  async onPresentModal() {
+    const modal = await this.modalCtrl.create({
+      component: NewDayModalPage,
+      cssClass: 'my-custom-class'
+    });
+    return await modal.present();
+  }
 }
