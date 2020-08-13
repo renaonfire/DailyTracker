@@ -24,7 +24,8 @@ export class NewProjectPage implements OnInit {
   async onPresentModal() {
     const modal = await this.modalCtrl.create({
       component: NewDayModalPage,
-      cssClass: 'my-custom-class'
+      cssClass: 'my-custom-class',
+      componentProps: {name: this.name}
     });
     return await modal.present();
   }

@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Project Name</ion-title>
+    <ion-title>{{name}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -11,7 +11,7 @@
           <ion-item>
             <ion-label position="floating">Date
             </ion-label>
-            <ion-datetime></ion-datetime>
+            <ion-datetime [(ngModel)]="projectDate" displayFormat="D MMMM YYYY" value={{currentDate()}} placeholder={{currentDate()}}></ion-datetime>
           </ion-item>
         </ion-col>
       </ion-row>
@@ -26,7 +26,7 @@
             <ion-item>
               <ion-label position="floating">Start Time
               </ion-label>
-              <ion-datetime></ion-datetime>
+              <ion-datetime [(ngModel)]="startTime" displayFormat="HH:mm" value={{currentTime()}} placeholder={{currentTime()}}></ion-datetime>
             </ion-item>
           </ion-col>
         </ion-row>
@@ -35,33 +35,23 @@
         <ion-item>
           <ion-label position="floating">Category
           </ion-label>
-          <ion-select interface="popover">
-            <ion-select-option>Travel</ion-select-option>
-            <ion-select-option>Working</ion-select-option>
-            <ion-select-option>Weather Downtime</ion-select-option>
-            <ion-select-option>Travel</ion-select-option>
+          <ion-select [(ngModel)]="category" interface="popover">
+            <ion-select-option value="travel">Travel</ion-select-option>
+            <ion-select-option value="working">Working</ion-select-option>
+            <ion-select-option value="weather">Weather Downtime</ion-select-option>
+            <ion-select-option value="travel">Travel</ion-select-option>
           </ion-select>
         </ion-item>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col size-md='6'>
-        <ion-item>
-          <ion-label position="floating">End Time
-          </ion-label>
-          <ion-datetime></ion-datetime>
-        </ion-item>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col size-md='6'>
-        <ion-button color="light">Save Activity</ion-button>
+        <ion-button (click)="onSaveActivity()" color="light">Save Activity</ion-button>
       </ion-col>
     </ion-row>
   </ion-grid>
-
-  <ion-footer>
-    <ion-button color="light">Save Day</ion-button>
-  </ion-footer>
-
 </ion-content>
+
+<ion-footer>
+    <ion-button (click)="onSaveDay()"  color="light">Save Day</ion-button>
+</ion-footer>
