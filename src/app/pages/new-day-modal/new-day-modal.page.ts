@@ -1,5 +1,7 @@
-import { Component, Input } from '@angular/core';
-import { ProjectService } from '../../service/project.service';
+import { Component, Input, ViewChild, ElementRef } from '@angular/core';
+import { ModalController } from '@ionic/angular';
+import { NewActivityPage } from '../new-activity/new-activity.page';
+// import { ProjectService } from '../../service/project.service';
 
 @Component({
   selector: 'app-new-day-modal',
@@ -14,7 +16,10 @@ export class NewDayModalPage {
   startTime;
   category;
 
-  constructor(private projectService: ProjectService) { }
+  @ViewChild('activity') activity: ElementRef;
+  showActivity: boolean;
+
+  constructor(private modalCtrl: ModalController) { }
 
   currentDate() {
     const date = new Date();
@@ -24,20 +29,28 @@ export class NewDayModalPage {
     return `${day} ${this.months[month]} ${year}`;
   }
 
-  currentTime() {
-    const date = new Date();
-    const hour = date.getHours();
-    const minutes = date.getMinutes();
-    return `${hour}:${minutes}`;
+  onAddActivity() {
+   this.onPresentModal();
   }
 
-  onSaveActivity() {
-    this.projectService.onCreateProject(this.name, this.projectDate, this.startTime, this.category);
+  async onPresentModal() {
+    const modal = await this.modalCtrl.create({
+      component: NewActivityPage,
+      cssClass: 'my-custom-class',
+      componentProps: {name: 'this.name'}
+    });
+    return await modal.present();
   }
 
-  onSaveDay() {
 
+  onCloseModal() {
+    this.modalCtrl.dismiss();
   }
+
+  // onSaveActivity() {
+  //   this.projectService.onCreateProject(this.name, this.projectDate, this.startTime, this.category);
+  // }
+
 
 }
 

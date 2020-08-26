@@ -17,6 +17,18 @@ const routes: Routes = [
   {
     path: 'new-day-modal',
     loadChildren: () => import('./pages/new-day-modal/new-day-modal.module').then( m => m.NewDayModalPageModule)
+  },
+  {
+    path: 'projects',
+    loadChildren: () => import('./pages/projects/projects.module').then( m => m.ProjectsPageModule)
+  },
+  {
+    path: 'project',
+    loadChildren: () => import('./pages/project/project.module').then( m => m.ProjectPageModule)
+  },
+  {
+    path: 'new-activity',
+    loadChildren: () => import('./pages/new-activity/new-activity.module').then( m => m.NewActivityPageModule)
   }
 ];
 

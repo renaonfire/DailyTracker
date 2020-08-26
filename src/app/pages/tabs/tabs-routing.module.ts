@@ -19,6 +19,10 @@ const routes: Routes = [
         loadChildren: () => import('../history/history.module').then( m => m.HistoryPageModule)
       },
       {
+        path: 'projects',
+        loadChildren: () => import('../projects/projects.module').then( m => m.ProjectsPageModule)
+      },
+      {
         path: '',
         redirectTo: '/main/home',
         pathMatch: 'full'
