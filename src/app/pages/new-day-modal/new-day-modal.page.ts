@@ -8,7 +8,7 @@ import { NewActivityPage } from '../new-activity/new-activity.page';
   templateUrl: './new-day-modal.page.html',
   styleUrls: ['./new-day-modal.page.scss'],
 })
-export class NewDayModalPage implements OnInit{
+export class NewDayModalPage implements OnInit {
 
   months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
   name;
@@ -41,7 +41,6 @@ export class NewDayModalPage implements OnInit{
   async onPresentModal() {
     const modal = await this.modalCtrl.create({
       component: NewActivityPage,
-      cssClass: 'my-custom-class',
       componentProps: {name: 'this.name'}
     });
     return await modal.present();
@@ -60,16 +59,4 @@ export class NewDayModalPage implements OnInit{
 }
 
 
-// get spend back
-// this.spendRef.child(month).once('value').then(resData => {
-//   let spendValues = [];
-//   for (const key in resData.val()) {
-//     if(resData.val().hasOwnProperty(key)) {
-//       spendValues.push(+resData.val()[key].amount);
-//     }
-//   }
-//   this.sumOfSpend = spendValues.reduce((a, b) => a + b) as number;
-//   this.sumChanged.next(this.sumOfSpend);
-//   return this.sumOfSpend;
-// }
 // )

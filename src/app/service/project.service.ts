@@ -1,15 +1,20 @@
 import { Injectable } from '@angular/core';
 import * as firebase from 'firebase';
 import { Project } from '../interfaces/project';
+import { BehaviorSubject, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProjectService {
 
-  constructor() {
-    // firebase.initializeApp(firebaseConfig);
+  private _projectData = new BehaviorSubject<Project[]>([]);
+
+  get projectData() {
+    return this._projectData.asObservable();
   }
+
+  projectChanged = new Subject<Project[]>();
 
   projectRef = firebase.database().ref('projects');
 
@@ -19,7 +24,7 @@ export class ProjectService {
       id: key,
       projectName: name,
       data: {
-        date: dt,
+        date: new Intl.DateTimeFormat('en-GB').format(dt),
         day: {
           activities: {
             startTime: start,
@@ -31,27 +36,25 @@ export class ProjectService {
     this.projectRef.child(key).set(newProject);
   }
 
-    //   this.spendInt = [{
-  //     id: this.spendRef.child(month).push().key,
-  //     data: {
-  //         date:  new Intl.DateTimeFormat('en-GB').format(date),
-  //         amount: value
-  //     }
-  // }];
-  // console.log(this.spendInt);
-  // this.spendRef.child(month).child(this.spendInt[0].id).set(this.spendInt[0].data);
-
-  // secon add function
-  // let generatedId = this.spendRef.push().key
-  // console.log(date);
-  // const newSpend = new SpendModel(
-  //   generatedId,
-  //   amount, 
-  //   date,
-  //   month
-  // );
-  // console.log(newSpend);
-  
-  // this.spendRef.child(month).child(generatedId).set(newSpend);
-  // return this._spendData.next([newSpend]);
+  retrieveProjects() {
+    this.projectRef.once('value').then(resData => {
+      const project = [];
+      for (const key in resData.val()) {
+        if (resData.val().hasOwnProperty(key)) {
+          const name = resData.val()[key].projectName;
+          const projectDate = resData.val()[key].data.date;
+          const projects: Project = {
+            id: key,
+            projectName: name,
+            data: {
+              date: projectDate
+            }
+          }
+          project.push(projects);
+        }
+      }
+      this.projectChanged.next(project);
+      return project;
+    });
+  }
 }

@@ -1,12 +1,12 @@
 export interface Project {
     id?: string;
-    projectName: string;
+    projectName?: string;
     data?: {
-        date: string;
-        day: {
-            activities: {
-                    startTime: string,
-                    category: string
+        date?: string;
+        day?: {
+            activities?: {
+                    startTime?: string,
+                    category?: string
                 }
         }
     }
