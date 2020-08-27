@@ -9,6 +9,8 @@ import { ModalController } from '@ionic/angular';
 })
 export class ProjectPage implements OnInit {
 
+  projectName = window.localStorage.getItem('projectName');
+
   constructor(private modalCtrl: ModalController) { }
 
   ngOnInit() {

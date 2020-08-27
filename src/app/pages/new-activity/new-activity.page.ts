@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
+import { ProjectService } from 'src/app/service/project.service';
 
 @Component({
   selector: 'app-new-activity',
@@ -8,9 +9,16 @@ import { ModalController } from '@ionic/angular';
 })
 export class NewActivityPage implements OnInit {
 
-  constructor(private modalCtrl: ModalController) { }
+  projectName;
+  newDayDate;
+  startTime;
+  category;
+
+  constructor(private modalCtrl: ModalController, private projectSrv: ProjectService) { }
 
   ngOnInit() {
+    this.projectName = window.localStorage.getItem('projectName');
+    this.newDayDate = window.localStorage.getItem('newDayDate');
   }
 
   currentTime() {
@@ -22,6 +30,11 @@ export class NewActivityPage implements OnInit {
 
   onModalClose() {
     this.modalCtrl.dismiss();
+  }
+
+  onSaveActivity() {
+    this.projectSrv.onCreateProjectWithActivity(this.projectName, this.newDayDate, this.startTime, this.category);
+    console.log(this.projectName, this.newDayDate, this.startTime, this.category);
   }
 
 

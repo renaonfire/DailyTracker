@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild, ElementRef } from '@angular/core';
+import { Component, Input, ViewChild, ElementRef, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { NewActivityPage } from '../new-activity/new-activity.page';
 // import { ProjectService } from '../../service/project.service';
@@ -8,11 +8,11 @@ import { NewActivityPage } from '../new-activity/new-activity.page';
   templateUrl: './new-day-modal.page.html',
   styleUrls: ['./new-day-modal.page.scss'],
 })
-export class NewDayModalPage {
+export class NewDayModalPage implements OnInit{
 
   months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
   name;
-  projectDate;
+  newDayDate;
   startTime;
   category;
 
@@ -20,6 +20,10 @@ export class NewDayModalPage {
   showActivity: boolean;
 
   constructor(private modalCtrl: ModalController) { }
+
+  ngOnInit() {
+    this.newDayDate = this.newDayDate ? this.newDayDate : this.currentDate();
+  }
 
   currentDate() {
     const date = new Date();
@@ -30,7 +34,8 @@ export class NewDayModalPage {
   }
 
   onAddActivity() {
-   this.onPresentModal();
+    window.localStorage.setItem('newDayDate', this.newDayDate);
+    this.onPresentModal();
   }
 
   async onPresentModal() {

@@ -10,6 +10,9 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { firebaseConfig } from './firebase';
+import * as firebase from 'firebase';
+
+firebase.initializeApp(firebaseConfig);
 
 @NgModule({
   declarations: [AppComponent],

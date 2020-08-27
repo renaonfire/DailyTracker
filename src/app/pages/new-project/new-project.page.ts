@@ -1,7 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
-import { NewProjectPageModule } from './new-project.module';
-import { NewDayModalPage } from '../new-day-modal/new-day-modal.page';
 import { Router } from '@angular/router';
 
 @Component({
@@ -11,7 +8,7 @@ import { Router } from '@angular/router';
 })
 export class NewProjectPage implements OnInit {
 
-  name;
+  projectName: string;
 
   constructor(private router: Router) { }
 
@@ -19,6 +16,7 @@ export class NewProjectPage implements OnInit {
   }
 
   onNext() {
+    window.localStorage.setItem('projectName', this.projectName);
     this.router.navigateByUrl('/project');
   }
 

@@ -7,12 +7,13 @@ import { Project } from '../interfaces/project';
 })
 export class ProjectService {
 
+  constructor() {
+    // firebase.initializeApp(firebaseConfig);
+  }
 
   projectRef = firebase.database().ref('projects');
 
-  constructor() { }
-
-  onCreateProject(name: string, dt?, start?, cat?) {
+  onCreateProjectWithActivity(name: string, dt?, start?, cat?) {
     const key = this.projectRef.push().key;
     const newProject: Project = {
       id: key,
@@ -27,8 +28,8 @@ export class ProjectService {
         }
       }
     };
-    
     this.projectRef.child(key).set(newProject);
+  }
 
     //   this.spendInt = [{
   //     id: this.spendRef.child(month).push().key,
@@ -53,5 +54,4 @@ export class ProjectService {
   
   // this.spendRef.child(month).child(generatedId).set(newSpend);
   // return this._spendData.next([newSpend]);
-  }
 }
