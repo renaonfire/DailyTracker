@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as firebase from 'firebase';
-import { Project } from '../interfaces/project';
+import { Project, Activities } from '../interfaces/project';
 import { BehaviorSubject, Subject } from 'rxjs';
 
 @Injectable({
@@ -22,18 +22,16 @@ export class ProjectService {
     const key = this.projectRef.push().key;
     const newProject: Project = {
       id: key,
-      projectName: name,
-      data: {
-        date: new Intl.DateTimeFormat('en-GB').format(dt),
-        day: {
-          activities: {
-            startTime: start,
-            category: cat
-          }
-        }
+      projectName: name
+    };
+    const newActivity: Activities = {
+      activity: {
+        startTime: start,
+        category: cat
       }
     };
     this.projectRef.child(key).set(newProject);
+    this.projectRef.child(key).child('days').child(dt).set(newActivity);
   }
 
   retrieveProjects() {
@@ -43,14 +41,14 @@ export class ProjectService {
         if (resData.val().hasOwnProperty(key)) {
           const name = resData.val()[key].projectName;
           const projectDate = resData.val()[key].data.date;
-          const projects: Project = {
-            id: key,
-            projectName: name,
-            data: {
-              date: projectDate
-            }
-          }
-          project.push(projects);
+          // const projects: Project = {
+          //   id: key,
+          //   projectName: name,
+          //   data: {
+          //     date: projectDate
+          //   }
+          // }
+          // project.push(projects);
         }
       }
       this.projectChanged.next(project);
