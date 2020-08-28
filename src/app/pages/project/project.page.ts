@@ -25,7 +25,9 @@ export class ProjectPage implements OnInit {
       this.loadedData = data;
       console.log('loaded', this.loadedData);
     });
-    this.projectSrv.retrieveProjectData(this.selectedProject);
+    if (this.selectedProject) {
+      this.projectSrv.retrieveProjectData(this.selectedProject);
+    } 
   }
 
   onNewDay() {

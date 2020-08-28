@@ -24,8 +24,8 @@ export class NewActivityPage implements OnInit {
     this.newDayDate = this.selectedDay ? this.selectedDay : window.localStorage.getItem('newDayDate');
   }
 
-  currentTime() {
-    return this.helpers.formatTime();
+  onTimeChanged(event) {
+    this.startTime = event.target.value;
   }
 
   onModalClose() {
@@ -33,12 +33,11 @@ export class NewActivityPage implements OnInit {
   }
 
   onSaveActivity() {
-    this.startTime = this.helpers.formatTime(this.startTime);
-    console.log(this.startTime);
+    const time = this.startTime ? this.startTime : new Date();
     if (this.selectedProject) {
-      this.projectSrv.onAddActivity(this.selectedProject, this.newDayDate, this.startTime, this.category);
+      this.projectSrv.onAddActivity(this.selectedProject, this.newDayDate, time, this.category);
     } else {
-      this.projectSrv.onCreateProjectWithActivity(this.projectName, this.newDayDate, this.startTime, this.category);
+      this.projectSrv.onCreateProjectWithActivity(this.projectName, this.newDayDate, time, this.category);
     }
   }
 

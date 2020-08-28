@@ -14,7 +14,6 @@ export class ProjectService {
   // get projectData() {
   //   return this._projectData.asObservable();
   // }
-  activityId = Math.floor(Math.random() * Math.floor(9999999));
   projectChanged = new Subject<Project[]>();
   dataChanged = new Subject<{}>();
   activitiesChanged = new Subject<{}>();
@@ -24,6 +23,7 @@ export class ProjectService {
   constructor(private helpers: Helpers) {}
 
   onCreateProjectWithActivity(name: string, dt?, start?, cat?) {
+    const activityId = Math.floor(Math.random() * Math.floor(9999999));
     const newDate = this.helpers.formatDate(dt);
     const newTime = this.helpers.formatTime(start);
     const newProject = {
@@ -36,7 +36,7 @@ export class ProjectService {
     };
     // TODO add validation to ensure project name is unique
     this.projectRef.child(name).set(newProject);
-    this.projectRef.child(name).child('days').child(newDate).child(`${this.activityId}`).set(newActivity);
+    this.projectRef.child(name).child('days').child(newDate).child(`${activityId}`).set(newActivity);
   }
 
   retrieveProjects() {
@@ -78,6 +78,7 @@ export class ProjectService {
   }
 
   onAddActivity(projectName, day, start, cat) {
+    const activityId = Math.floor(Math.random() * Math.floor(9999999));
     const newDay = this.helpers.formatDate(day);
     const newTime = this.helpers.formatTime(start);
     const newActivity: Activities = {
@@ -85,6 +86,6 @@ export class ProjectService {
       startTime: newTime,
       category: cat
     };
-    this.projectRef.child(projectName).child('days').child(newDay).child(`${this.activityId}`).set(newActivity);
+    this.projectRef.child(projectName).child('days').child(newDay).child(`${activityId}`).set(newActivity);
   }
 }

@@ -3,8 +3,8 @@ export class Helpers {
     
         formatTime(time?: string) {
             const date = time ? new Date(time) : new Date();
-            const hour = date.getHours().toLocaleString();
-            const minutes = date.getMinutes().toLocaleString();
+            const hour = date.getHours();
+            const minutes = date.getMinutes();
             return `${hour}:${minutes}`;
           }
     

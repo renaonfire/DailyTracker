@@ -3,7 +3,7 @@
     <ion-title>{{ selectedProject ? selectedProject : localName }}</ion-title>
     <ion-buttons slot="start">
       <ion-button (click)="onCloseProject()">
-        <ion-icon [name]="selectedProject ? 'close' : 'arrow-back-outline'"></ion-icon>
+        <ion-icon [name]="selectedProject ? 'close' : 'arrow-back'"></ion-icon>
       </ion-button>
     </ion-buttons>
     <ion-buttons slot="end">
@@ -13,7 +13,7 @@
 </ion-header>
 
 <ion-content>
-  <ion-list>
+  <ion-list *ngIf="loadedData">
     <ion-item-sliding *ngFor="let day of loadedData; let i = index" [attr.data-index]="i">
       <ion-item (click)="onViewDay(day)">
         <ion-label>{{ day }}</ion-label>
