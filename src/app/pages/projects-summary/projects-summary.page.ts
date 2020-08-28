@@ -8,8 +8,8 @@ import { ProjectPage } from '../project/project.page';
 
 @Component({
   selector: 'app-projects',
-  templateUrl: './projects.page.html',
-  styleUrls: ['./projects.page.scss'],
+  templateUrl: './projects-summary.page.html',
+  styleUrls: ['./projects-summary.page.scss'],
 })
 export class ProjectsPage implements OnInit {
 
@@ -43,7 +43,7 @@ export class ProjectsPage implements OnInit {
   async onPresentModal() {
     const modal = await this.modalCtrl.create({
       component: ProjectPage,
-      componentProps: {project: this.selectedProject}
+      componentProps: {selectedProject: this.selectedProject}
     });
     return await modal.present();
   }

@@ -1,6 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NewDayModalPage } from '../new-day-modal/new-day-modal.page';
 import { ModalController } from '@ionic/angular';
+import { ProjectService } from 'src/app/service/project.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-project',
@@ -9,12 +11,20 @@ import { ModalController } from '@ionic/angular';
 })
 export class ProjectPage implements OnInit {
 
-  @Input() project;
+  @Input() selectedProject;
+
+  loadedData;
+  loadedDataSub;
   localName = window.localStorage.getItem('projectName');
 
-  constructor(private modalCtrl: ModalController) { }
+  constructor(private modalCtrl: ModalController, private projectSrv: ProjectService, private router: Router) { }
 
   ngOnInit() {
+    this.loadedDataSub = this.projectSrv.dataChanged.subscribe(data => {
+      this.loadedData = data;
+      console.log('loaded', this.loadedData);
+    });
+    this.projectSrv.retrieveProjectData(this.selectedProject);
   }
 
   onNewDay() {
@@ -27,6 +37,10 @@ export class ProjectPage implements OnInit {
       componentProps: {name: 'this.name'}
     });
     return await modal.present();
+  }
+
+  onCloseProject() {
+    this.selectedProject ? this.modalCtrl.dismiss() : this.router.navigateByUrl('/main/new-project');
   }
 
 }

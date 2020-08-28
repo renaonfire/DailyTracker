@@ -15,6 +15,7 @@ export class ProjectService {
   }
 
   projectChanged = new Subject<Project[]>();
+  dataChanged = new Subject<{}>();
 
   projectRef = firebase.database().ref('projects');
 
@@ -42,10 +43,21 @@ export class ProjectService {
           console.log(projectName);
         }
       }
-    this.projectChanged.next(projectName);
-      // console.log(projectName);
-    return projectName;
+      this.projectChanged.next(projectName);
+      return projectName;
     // });
     })
   }
+
+  retrieveProjectData(projectName: string) {
+    const days = [];
+    this.projectRef.child(projectName).child('days').once('value', (snapshot) => {
+      snapshot.forEach((childSnapshot) => {
+        days.push(childSnapshot.key);
+        console.log('days', days);
+    });
+  });
+    this.dataChanged.next(days);
+    return days;
+}
 }

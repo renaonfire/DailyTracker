@@ -4,9 +4,9 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { ProjectsPageRoutingModule } from './projects-routing.module';
+import { ProjectsPageRoutingModule } from './projects-summary-routing.module';
 
-import { ProjectsPage } from './projects.page';
+import { ProjectsPage } from './projects-summary.page';
 
 @NgModule({
   imports: [
