@@ -11,6 +11,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { firebaseConfig } from './firebase';
 import * as firebase from 'firebase';
+import { Helpers } from './helpers/helpers';
 
 firebase.initializeApp(firebaseConfig);
 
@@ -22,6 +23,7 @@ firebase.initializeApp(firebaseConfig);
   providers: [
     StatusBar,
     SplashScreen,
+    Helpers,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

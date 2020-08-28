@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import * as firebase from 'firebase';
 import { Project, Activities } from '../interfaces/project';
 import { Subject } from 'rxjs';
+import { Helpers } from '../helpers/helpers';
 
 @Injectable({
   providedIn: 'root'
@@ -20,18 +21,22 @@ export class ProjectService {
 
   projectRef = firebase.database().ref('projects');
 
+  constructor(private helpers: Helpers) {}
+
   onCreateProjectWithActivity(name: string, dt?, start?, cat?) {
+    const newDate = this.helpers.formatDate(dt);
+    const newTime = this.helpers.formatTime(start);
     const newProject = {
       projectName: name
     };
     const newActivity: Activities = {
-        daysDate: dt,
-        startTime: start,
+        daysDate: newDate,
+        startTime: newTime,
         category: cat
     };
     // TODO add validation to ensure project name is unique
     this.projectRef.child(name).set(newProject);
-    this.projectRef.child(name).child('days').child(dt).child(`${this.activityId}`).set(newActivity);
+    this.projectRef.child(name).child('days').child(newDate).child(`${this.activityId}`).set(newActivity);
   }
 
   retrieveProjects() {
@@ -73,11 +78,13 @@ export class ProjectService {
   }
 
   onAddActivity(projectName, day, start, cat) {
+    const newDay = this.helpers.formatDate(day);
+    const newTime = this.helpers.formatTime(start);
     const newActivity: Activities = {
-      daysDate: day,
-      startTime: start,
+      daysDate: newDay,
+      startTime: newTime,
       category: cat
     };
-    this.projectRef.child(projectName).child('days').child(day).child(`${this.activityId}`).set(newActivity);
+    this.projectRef.child(projectName).child('days').child(newDay).child(`${this.activityId}`).set(newActivity);
   }
 }

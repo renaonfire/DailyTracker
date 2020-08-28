@@ -1,6 +1,7 @@
 import { Component, Input, ViewChild, ElementRef, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { NewActivityPage } from '../new-activity/new-activity.page';
+import { Helpers } from 'src/app/helpers/helpers';
 // import { ProjectService } from '../../service/project.service';
 
 @Component({
@@ -11,27 +12,19 @@ import { NewActivityPage } from '../new-activity/new-activity.page';
 export class NewDayModalPage implements OnInit {
 
   @Input() selectedProject;
-  months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
   name;
   newDayDate;
   startTime;
   category;
 
-  @ViewChild('activity') activity: ElementRef;
-  showActivity: boolean;
-
-  constructor(private modalCtrl: ModalController) { }
+  constructor(private modalCtrl: ModalController, private helpers: Helpers) { }
 
   ngOnInit() {
-    this.newDayDate = this.newDayDate ? this.newDayDate : this.currentDate();
+    this.newDayDate = this.newDayDate ? this.helpers.formatDate(this.newDayDate) : this.currentDate();
   }
 
   currentDate() {
-    const date = new Date();
-    const month = date.getMonth();
-    const day = date.getDate();
-    const year = date.getFullYear();
-    return `${day} ${this.months[month]} ${year}`;
+    return this.helpers.formatDate();
   }
 
   onAddActivity() {
@@ -47,17 +40,11 @@ export class NewDayModalPage implements OnInit {
     return await modal.present();
   }
 
+  onDateChanged(event) {
+    this.newDayDate = this.helpers.formatDate(event.target.value);
+  }
 
   onCloseModal() {
     this.modalCtrl.dismiss();
   }
-
-  // onSaveActivity() {
-  //   this.projectService.onCreateProject(this.name, this.projectDate, this.startTime, this.category);
-  // }
-
-
 }
-
-
-// )
