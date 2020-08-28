@@ -15,7 +15,7 @@
 <ion-content>
   <ion-list>
     <ion-item-sliding *ngFor="let day of loadedData; let i = index" [attr.data-index]="i">
-      <ion-item>
+      <ion-item (click)="onViewDay(day)">
         <ion-label>{{ day }}</ion-label>
       </ion-item>
       <ion-item-options side="end">

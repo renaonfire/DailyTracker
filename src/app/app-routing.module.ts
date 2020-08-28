@@ -25,6 +25,10 @@ const routes: Routes = [
   {
     path: 'new-activity',
     loadChildren: () => import('./pages/new-activity/new-activity.module').then( m => m.NewActivityPageModule)
+  },
+  {
+    path: 'view-day',
+    loadChildren: () => import('./pages/view-day/view-day.module').then( m => m.ViewDayPageModule)
   }
 ];
 

@@ -3,6 +3,7 @@ import { NewDayModalPage } from '../new-day-modal/new-day-modal.page';
 import { ModalController } from '@ionic/angular';
 import { ProjectService } from 'src/app/service/project.service';
 import { Router } from '@angular/router';
+import { ViewDayPage } from '../view-day/view-day.page';
 
 @Component({
   selector: 'app-project',
@@ -28,19 +29,23 @@ export class ProjectPage implements OnInit {
   }
 
   onNewDay() {
-    this.onPresentModal();
+    this.onPresentModal(NewDayModalPage, {name: 'this.name'});
   }
 
-  async onPresentModal() {
+  async onPresentModal(comp, prop: {}) {
     const modal = await this.modalCtrl.create({
-      component: NewDayModalPage,
-      componentProps: {name: 'this.name'}
+      component: comp,
+      componentProps: prop
     });
     return await modal.present();
   }
 
   onCloseProject() {
     this.selectedProject ? this.modalCtrl.dismiss() : this.router.navigateByUrl('/main/new-project');
+  }
+
+  onViewDay(day) {
+    this.onPresentModal(ViewDayPage, {selectedDay: day, selectedProject: this.selectedProject});
   }
 
 }

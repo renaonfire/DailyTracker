@@ -8,14 +8,15 @@ import { BehaviorSubject, Subject } from 'rxjs';
 })
 export class ProjectService {
 
-  private _projectData = new BehaviorSubject<Project[]>([]);
+  // private _projectData = new BehaviorSubject<Project[]>([]);
 
-  get projectData() {
-    return this._projectData.asObservable();
-  }
+  // get projectData() {
+  //   return this._projectData.asObservable();
+  // }
 
   projectChanged = new Subject<Project[]>();
   dataChanged = new Subject<{}>();
+  activitiesChanged = new Subject<{}>();
 
   projectRef = firebase.database().ref('projects');
 
@@ -59,5 +60,17 @@ export class ProjectService {
   });
     this.dataChanged.next(days);
     return days;
-}
+  }
+
+  retrieveDayActivities(projectName, day) {
+    const activities = [];
+    this.projectRef.child(projectName).child('days').child(day).once('value', (snapshot) => {
+      snapshot.forEach((childSnapshot) => {
+        activities.push(childSnapshot.val());
+        console.log('activities', activities);
+    });
+  });
+    this.activitiesChanged.next(activities);
+    return activities;
+  }
 }
