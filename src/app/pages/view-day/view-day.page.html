@@ -1,9 +1,13 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>{{ selectedDay }}</ion-title>
-    <ion-buttons>
+    <ion-buttons slot="start">
       <ion-button (click)="onCloseDay()">
         <ion-icon name="close"></ion-icon>
+        </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button slot="end" (click)="onAddDayActivity()">Add Activity
       </ion-button>
     </ion-buttons>
   </ion-toolbar>

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as firebase from 'firebase';
 import { Project, Activities } from '../interfaces/project';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +13,7 @@ export class ProjectService {
   // get projectData() {
   //   return this._projectData.asObservable();
   // }
-
+  activityId = Math.floor(Math.random() * Math.floor(9999999));
   projectChanged = new Subject<Project[]>();
   dataChanged = new Subject<{}>();
   activitiesChanged = new Subject<{}>();
@@ -29,10 +29,9 @@ export class ProjectService {
         startTime: start,
         category: cat
     };
-    const activityId = Math.floor(Math.random() * Math.floor(9999999));
     // TODO add validation to ensure project name is unique
     this.projectRef.child(name).set(newProject);
-    this.projectRef.child(name).child('days').child(dt).child(`${activityId}`).set(newActivity);
+    this.projectRef.child(name).child('days').child(dt).child(`${this.activityId}`).set(newActivity);
   }
 
   retrieveProjects() {
@@ -46,8 +45,7 @@ export class ProjectService {
       }
       this.projectChanged.next(projectName);
       return projectName;
-    // });
-    })
+    });
   }
 
   retrieveProjectData(projectName: string) {
@@ -72,5 +70,14 @@ export class ProjectService {
   });
     this.activitiesChanged.next(activities);
     return activities;
+  }
+
+  onAddActivity(projectName, day, start, cat) {
+    const newActivity: Activities = {
+      daysDate: day,
+      startTime: start,
+      category: cat
+    };
+    this.projectRef.child(projectName).child('days').child(day).child(`${this.activityId}`).set(newActivity);
   }
 }

@@ -10,6 +10,7 @@ import { NewActivityPage } from '../new-activity/new-activity.page';
 })
 export class NewDayModalPage implements OnInit {
 
+  @Input() selectedProject;
   months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
   name;
   newDayDate;
@@ -41,7 +42,7 @@ export class NewDayModalPage implements OnInit {
   async onPresentModal() {
     const modal = await this.modalCtrl.create({
       component: NewActivityPage,
-      componentProps: {name: 'this.name'}
+      componentProps: {selectedProject: this.selectedProject}
     });
     return await modal.present();
   }

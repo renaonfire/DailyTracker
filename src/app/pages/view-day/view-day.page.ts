@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ProjectService } from 'src/app/service/project.service';
 import { ModalController } from '@ionic/angular';
+import { NewActivityPage } from '../new-activity/new-activity.page';
 
 @Component({
   selector: 'app-view-day',
@@ -26,6 +27,18 @@ export class ViewDayPage implements OnInit {
 
   onCloseDay() {
     this.modalCtrl.dismiss();
+  }
+
+  onAddDayActivity() {
+    this.onPresentModal();
+  }
+
+  async onPresentModal() {
+    const modal = await this.modalCtrl.create({
+      component: NewActivityPage,
+      componentProps: {selectedProject: this.selectedProject, selectedDay: this.selectedDay}
+    });
+    return await modal.present();
   }
 
 }

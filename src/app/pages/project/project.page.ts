@@ -29,7 +29,7 @@ export class ProjectPage implements OnInit {
   }
 
   onNewDay() {
-    this.onPresentModal(NewDayModalPage, {name: 'this.name'});
+    this.onPresentModal(NewDayModalPage, {selectedProject: this.selectedProject});
   }
 
   async onPresentModal(comp, prop: {}) {
