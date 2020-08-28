@@ -19,40 +19,33 @@ export class ProjectService {
   projectRef = firebase.database().ref('projects');
 
   onCreateProjectWithActivity(name: string, dt?, start?, cat?) {
-    const key = this.projectRef.push().key;
-    const newProject: Project = {
-      id: key,
+    const newProject = {
       projectName: name
     };
     const newActivity: Activities = {
-      activity: {
+        daysDate: dt,
         startTime: start,
         category: cat
-      }
     };
-    this.projectRef.child(key).set(newProject);
-    this.projectRef.child(key).child('days').child(dt).set(newActivity);
+    const activityId = Math.floor(Math.random() * Math.floor(9999999));
+    // TODO add validation to ensure project name is unique
+    this.projectRef.child(name).set(newProject);
+    this.projectRef.child(name).child('days').child(dt).child(`${activityId}`).set(newActivity);
   }
 
   retrieveProjects() {
     this.projectRef.once('value').then(resData => {
-      const project = [];
-      for (const key in resData.val()) {
-        if (resData.val().hasOwnProperty(key)) {
-          const name = resData.val()[key].projectName;
-          const projectDate = resData.val()[key].data.date;
-          // const projects: Project = {
-          //   id: key,
-          //   projectName: name,
-          //   data: {
-          //     date: projectDate
-          //   }
-          // }
-          // project.push(projects);
+      const projectName = [];
+      for ( const name in resData.val()) {
+        if (resData.val()) {
+          projectName.push(resData.val()[name].projectName);
+          console.log(projectName);
         }
       }
-      this.projectChanged.next(project);
-      return project;
-    });
+    this.projectChanged.next(projectName);
+      // console.log(projectName);
+    return projectName;
+    // });
+    })
   }
 }

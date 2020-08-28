@@ -4,8 +4,7 @@ export interface Project {
 }
 
 export interface Activities {
-    activity?: {
-        startTime?: string,
-        category?: string
-    }
+        daysDate: string;
+        startTime?: string;
+        category?: string;
 }

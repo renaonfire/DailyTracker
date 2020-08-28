@@ -13,7 +13,7 @@ import { ProjectPage } from '../project/project.page';
 })
 export class ProjectsPage implements OnInit {
 
-  loadedProjects: Project[];
+  loadedProjects;
   loadedProjectsSub: Subscription;
   selectedProject;
 
