@@ -20,7 +20,6 @@ export class ProjectsPage implements OnInit {
   selectedProject;
 
   constructor(
-    private router: Router,
     private projectSrv: ProjectService,
     private modalCtrl: ModalController
   ) { }
@@ -41,6 +40,9 @@ export class ProjectsPage implements OnInit {
     const modal = await this.modalCtrl.create({
       component: NewProjectPage,
       componentProps: {existingProjects: this.loadedProjects}
+    });
+    modal.onWillDismiss().then(() => {
+      this.ngOnInit();
     });
     return await modal.present();
   }

@@ -15,6 +15,11 @@ export class ViewDayPage implements OnInit {
   loadedActivities;
   loadedActivitiesSub;
 
+  categories = {
+    travel: 'Travel',
+    weather: 'Weather Downtime',
+    working: 'Working'
+  }
 
   constructor(private projectSrv: ProjectService, private modalCtrl: ModalController) { }
 
@@ -42,6 +47,9 @@ export class ViewDayPage implements OnInit {
       component: NewActivityPage,
       componentProps: {selectedProject: this.selectedProject, selectedDay: this.selectedDay}
     });
+    modal.onWillDismiss().then(() => {
+      this.ngOnInit();
+    })
     return await modal.present();
   }
 

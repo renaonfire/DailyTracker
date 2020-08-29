@@ -31,14 +31,10 @@ export class ProjectPage implements OnInit {
     this.localDay = window.localStorage.getItem('newDayDate');
   }
 
-  onNewDay() {
-    this.onPresentModal(NewDayModalPage, {selectedProject: this.selectedProject, existingDays: this.loadedDays});
-  }
-
-  async onPresentModal(comp, prop: {}) {
+  async onNewDay() {
     const modal = await this.modalCtrl.create({
-      component: comp,
-      componentProps: prop
+      component: NewDayModalPage,
+      componentProps: {selectedProject: this.selectedProject, existingDays: this.loadedDays}
     });
     modal.onWillDismiss().then(() => {
       this.ngOnInit();
@@ -46,13 +42,21 @@ export class ProjectPage implements OnInit {
     return await modal.present();
   }
 
+  onViewDay(day) {
+    this.onPresentModal(ViewDayPage, {selectedDay: day, selectedProject: this.selectedProject});
+  }
+  
+  async onPresentModal(comp, prop: {}) {
+    const modal = await this.modalCtrl.create({
+      component: comp,
+      componentProps: prop
+    });
+    return await modal.present();
+  }
+
   onCloseProject() {
     this.modalCtrl.dismiss()
     this.router.navigateByUrl('/main/projects-summary');
-  }
-
-  onViewDay(day) {
-    this.onPresentModal(ViewDayPage, {selectedDay: day, selectedProject: this.selectedProject});
   }
 
 }

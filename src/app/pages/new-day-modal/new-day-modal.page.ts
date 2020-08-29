@@ -20,6 +20,7 @@ export class NewDayModalPage implements OnInit {
 
   ngOnInit() {
     this.newDayDate = this.newDayDate ? this.helpers.formatDate(this.newDayDate) : this.currentDate();
+    console.log('selected', this.selectedProject);
   }
 
   currentDate() {
@@ -35,7 +36,7 @@ export class NewDayModalPage implements OnInit {
   }
 
   onAddActivity() {
-    if (this.existingDays.find(day => day === this.newDayDate)) {
+    if (this.existingDays && this.existingDays.find(day => day === this.newDayDate)) {
       this.onShowAlert();
     } else {
       window.localStorage.setItem('newDayDate', this.newDayDate);
@@ -44,7 +45,7 @@ export class NewDayModalPage implements OnInit {
   }
 
   onSaveDay() {
-    if (this.existingDays.find(day => day === this.newDayDate)) {
+    if (this.existingDays && this.existingDays.find(day => day === this.newDayDate)) {
       this.onShowAlert();
     } else {
       window.localStorage.setItem('newDayDate', this.newDayDate);

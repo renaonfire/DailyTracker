@@ -34,7 +34,7 @@ export class NewActivityPage implements OnInit {
 
   onSaveActivity() {
     const time = this.startTime ? this.startTime : new Date();
-    if (this.selectedProject) {
+    if (this.selectedProject && this.selectedProject !== this.projectName) {
       this.projectSrv.onAddActivity(this.selectedProject, this.newDayDate, time, this.category);
     } else {
       this.projectSrv.onCreateProjectWithData(this.projectName, this.newDayDate, time, this.category);
