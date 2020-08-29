@@ -14,24 +14,25 @@ export class ProjectPage implements OnInit {
 
   @Input() selectedProject;
 
-  loadedData;
+  loadedDays;
   loadedDataSub;
   localName = window.localStorage.getItem('projectName');
+  localDay;
 
   constructor(private modalCtrl: ModalController, private projectSrv: ProjectService, private router: Router) { }
 
   ngOnInit() {
-    this.loadedDataSub = this.projectSrv.dataChanged.subscribe(data => {
-      this.loadedData = data;
-      console.log('loaded', this.loadedData);
+    this.loadedDataSub = this.projectSrv.daysChanged.subscribe(days => {
+      this.loadedDays = days;
     });
     if (this.selectedProject) {
-      this.projectSrv.retrieveProjectData(this.selectedProject);
+      this.projectSrv.retrieveProjectDays(this.selectedProject);
     } 
+    this.localDay = window.localStorage.getItem('newDayDate');
   }
 
   onNewDay() {
-    this.onPresentModal(NewDayModalPage, {selectedProject: this.selectedProject});
+    this.onPresentModal(NewDayModalPage, {selectedProject: this.selectedProject, existingDays: this.loadedDays});
   }
 
   async onPresentModal(comp, prop: {}) {
@@ -39,11 +40,15 @@ export class ProjectPage implements OnInit {
       component: comp,
       componentProps: prop
     });
+    modal.onWillDismiss().then(() => {
+      this.ngOnInit();
+    });
     return await modal.present();
   }
 
   onCloseProject() {
-    this.selectedProject ? this.modalCtrl.dismiss() : this.router.navigateByUrl('/main/new-project');
+    this.modalCtrl.dismiss()
+    this.router.navigateByUrl('/main/projects-summary');
   }
 
   onViewDay(day) {

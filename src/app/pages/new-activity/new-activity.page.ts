@@ -37,8 +37,10 @@ export class NewActivityPage implements OnInit {
     if (this.selectedProject) {
       this.projectSrv.onAddActivity(this.selectedProject, this.newDayDate, time, this.category);
     } else {
-      this.projectSrv.onCreateProjectWithActivity(this.projectName, this.newDayDate, time, this.category);
+      this.projectSrv.onCreateProjectWithData(this.projectName, this.newDayDate, time, this.category);
     }
+    window.localStorage.clear();
+    this.onModalClose();
   }
 
 

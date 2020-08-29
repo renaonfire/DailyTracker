@@ -9,24 +9,19 @@ import { Helpers } from '../helpers/helpers';
 })
 export class ProjectService {
 
-  // private _projectData = new BehaviorSubject<Project[]>([]);
-
-  // get projectData() {
-  //   return this._projectData.asObservable();
-  // }
   projectChanged = new Subject<Project[]>();
-  dataChanged = new Subject<{}>();
+  daysChanged = new Subject<{}>();
   activitiesChanged = new Subject<{}>();
 
   projectRef = firebase.database().ref('projects');
 
   constructor(private helpers: Helpers) {}
 
-  onCreateProjectWithActivity(name: string, dt?, start?, cat?) {
+  onCreateProjectWithData(name: string, day: string, start: string, cat: string) {
     const activityId = Math.floor(Math.random() * Math.floor(9999999));
-    const newDate = this.helpers.formatDate(dt);
-    const newTime = this.helpers.formatTime(start);
-    const newProject = {
+    const newDate = this.helpers.formatDate(day);
+    const newTime = start && this.helpers.formatTime(start);
+    const newProject: Project = {
       projectName: name
     };
     const newActivity: Activities = {
@@ -45,7 +40,6 @@ export class ProjectService {
       for ( const name in resData.val()) {
         if (resData.val()) {
           projectName.push(resData.val()[name].projectName);
-          console.log(projectName);
         }
       }
       this.projectChanged.next(projectName);
@@ -53,15 +47,14 @@ export class ProjectService {
     });
   }
 
-  retrieveProjectData(projectName: string) {
+  retrieveProjectDays(projectName: string) {
     const days = [];
     this.projectRef.child(projectName).child('days').once('value', (snapshot) => {
       snapshot.forEach((childSnapshot) => {
         days.push(childSnapshot.key);
-        console.log('days', days);
     });
   });
-    this.dataChanged.next(days);
+    this.daysChanged.next(days);
     return days;
   }
 
@@ -70,7 +63,6 @@ export class ProjectService {
     this.projectRef.child(projectName).child('days').child(day).once('value', (snapshot) => {
       snapshot.forEach((childSnapshot) => {
         activities.push(childSnapshot.val());
-        console.log('activities', activities);
     });
   });
     this.activitiesChanged.next(activities);

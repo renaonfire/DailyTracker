@@ -1,4 +1,9 @@
+import { AlertController } from '@ionic/angular';
+
 export class Helpers {
+
+  alertCtrl = new AlertController();
+
         months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     
         formatTime(time?: string) {
@@ -14,6 +19,14 @@ export class Helpers {
             const day = newDate.getDate();
             const year = newDate.getFullYear();
             return `${day} ${this.months[month]} ${year}`;
+        }
+
+        showAlert(head: string, msg: string) {
+          this.alertCtrl.create({
+            header: head,
+            message: msg,
+            buttons: ['OK']
+          }).then(alertEl => alertEl.present());
         }
     
 }

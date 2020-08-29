@@ -13,8 +13,21 @@
 </ion-header>
 
 <ion-content>
-  <ion-list *ngIf="loadedData">
-    <ion-item-sliding *ngFor="let day of loadedData; let i = index" [attr.data-index]="i">
+  <ion-list *ngIf="localDay">
+    <ion-item-sliding>
+      <ion-item (click)="onViewDay(localDay)">
+        <ion-label>{{ localDay }}</ion-label>
+        <ion-badge color="danger">No Activities</ion-badge>
+      </ion-item>
+      <ion-item-options side="end">
+        <ion-item-option color="danger" expandable>
+          Delete
+        </ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+  <ion-list *ngIf="loadedDays">
+    <ion-item-sliding *ngFor="let day of loadedDays; let i = index" [attr.data-index]="i">
       <ion-item (click)="onViewDay(day)">
         <ion-label>{{ day }}</ion-label>
       </ion-item>

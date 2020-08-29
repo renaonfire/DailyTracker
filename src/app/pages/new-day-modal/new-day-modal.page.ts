@@ -1,8 +1,9 @@
 import { Component, Input, ViewChild, ElementRef, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, AlertController } from '@ionic/angular';
 import { NewActivityPage } from '../new-activity/new-activity.page';
 import { Helpers } from 'src/app/helpers/helpers';
-// import { ProjectService } from '../../service/project.service';
+import { ProjectService } from 'src/app/service/project.service';
+
 
 @Component({
   selector: 'app-new-day-modal',
@@ -12,10 +13,8 @@ import { Helpers } from 'src/app/helpers/helpers';
 export class NewDayModalPage implements OnInit {
 
   @Input() selectedProject;
-  name;
   newDayDate;
-  startTime;
-  category;
+  existingDays;
 
   constructor(private modalCtrl: ModalController, private helpers: Helpers) { }
 
@@ -27,9 +26,30 @@ export class NewDayModalPage implements OnInit {
     return this.helpers.formatDate();
   }
 
+  onShowAlert() {
+    const alert = {
+      head: 'Day Already Exists',
+      msg: 'Please select day from exisitng list to add activity'
+    };
+    this.helpers.showAlert(alert.head, alert.msg);
+  }
+
   onAddActivity() {
-    window.localStorage.setItem('newDayDate', this.newDayDate);
-    this.onPresentModal();
+    if (this.existingDays.find(day => day === this.newDayDate)) {
+      this.onShowAlert();
+    } else {
+      window.localStorage.setItem('newDayDate', this.newDayDate);
+      this.onPresentModal();
+    }
+  }
+
+  onSaveDay() {
+    if (this.existingDays.find(day => day === this.newDayDate)) {
+      this.onShowAlert();
+    } else {
+      window.localStorage.setItem('newDayDate', this.newDayDate);
+      this.onCloseModal();
+    }
   }
 
   async onPresentModal() {
@@ -43,6 +63,7 @@ export class NewDayModalPage implements OnInit {
   onDateChanged(event) {
     this.newDayDate = this.helpers.formatDate(event.target.value);
   }
+
 
   onCloseModal() {
     this.modalCtrl.dismiss();

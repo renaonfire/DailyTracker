@@ -5,6 +5,7 @@ import { Project } from 'src/app/interfaces/project';
 import { Subscription } from 'rxjs';
 import { ModalController } from '@ionic/angular';
 import { ProjectPage } from '../project/project.page';
+import { NewProjectPage } from '../new-project/new-project.page';
 
 @Component({
   selector: 'app-projects',
@@ -13,6 +14,7 @@ import { ProjectPage } from '../project/project.page';
 })
 export class ProjectsPage implements OnInit {
 
+  localName;
   loadedProjects;
   loadedProjectsSub: Subscription;
   selectedProject;
@@ -26,13 +28,21 @@ export class ProjectsPage implements OnInit {
   ngOnInit() {
     this.loadedProjectsSub = this.projectSrv.projectChanged.subscribe(project => {
       this.loadedProjects = project;
-      console.log(this.loadedProjects);
     });
     this.projectSrv.retrieveProjects();
+    this.localName = window.localStorage.getItem('projectName');
   }
 
-  onPressNewProject() {
-    this.router.navigateByUrl('/main/new-project');
+  ionViewWillEnter() {
+    this.ngOnInit();
+  }
+
+  async onPressNewProject() {
+    const modal = await this.modalCtrl.create({
+      component: NewProjectPage,
+      componentProps: {existingProjects: this.loadedProjects}
+    });
+    return await modal.present();
   }
 
   onClickProject(project: Project) {
@@ -44,6 +54,9 @@ export class ProjectsPage implements OnInit {
     const modal = await this.modalCtrl.create({
       component: ProjectPage,
       componentProps: {selectedProject: this.selectedProject}
+    });
+    modal.onWillDismiss().then(() => {
+      this.ngOnInit();
     });
     return await modal.present();
   }
