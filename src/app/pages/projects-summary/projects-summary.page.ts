@@ -54,6 +54,23 @@ export class ProjectsPage implements OnInit {
     this.onPresentModal();
   }
 
+  onDeleteProject(project: string) {
+    if (this.localName === project) {
+      window.localStorage.removeItem('projectName');
+      this.localName = '';
+    } else {
+      this.projectSrv.deleteProject(project);
+      for (let i = 0; i < this.loadedProjects.length; i++) {
+        if (this.loadedProjects[i] === project) {
+          this.loadedProjects.splice(i, 1); }
+        }
+    }
+  }
+
+  localDay(projectName) {
+    return !!(window.localStorage.getItem(`${projectName}-temp-day`));
+  }
+
   async onPresentModal() {
     const modal = await this.modalCtrl.create({
       component: ProjectPage,

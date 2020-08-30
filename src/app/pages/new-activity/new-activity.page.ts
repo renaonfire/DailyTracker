@@ -21,7 +21,7 @@ export class NewActivityPage implements OnInit {
 
   ngOnInit() {
     this.projectName = window.localStorage.getItem('projectName');
-    this.newDayDate = this.selectedDay ? this.selectedDay : window.localStorage.getItem('newDayDate');
+    this.newDayDate = this.selectedDay ? this.selectedDay : window.localStorage.getItem(`${this.selectedProject}-temp-day`);
   }
 
   onTimeChanged(event) {
@@ -36,10 +36,12 @@ export class NewActivityPage implements OnInit {
     const time = this.startTime ? this.startTime : new Date();
     if (this.selectedProject && this.selectedProject !== this.projectName) {
       this.projectSrv.onAddActivity(this.selectedProject, this.newDayDate, time, this.category);
+      window.localStorage.removeItem(`${this.selectedProject}-temp-day`);
     } else {
       this.projectSrv.onCreateProjectWithData(this.projectName, this.newDayDate, time, this.category);
+      window.localStorage.removeItem('projectName');
+      window.localStorage.removeItem(`${this.selectedProject}-temp-day`);
     }
-    window.localStorage.clear();
     this.onModalClose();
   }
 

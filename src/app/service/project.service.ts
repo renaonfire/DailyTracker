@@ -80,4 +80,12 @@ export class ProjectService {
     };
     this.projectRef.child(projectName).child('days').child(newDay).child(`${activityId}`).set(newActivity);
   }
+
+  deleteProject(projectName: string) {
+    this.projectRef.child(projectName).remove();
+  }
+
+  deleteDayFromProject(projectName: string, day: string) {
+    this.projectRef.child(projectName).child('days').child(day).remove();
+  }
 }

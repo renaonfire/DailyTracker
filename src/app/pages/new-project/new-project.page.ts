@@ -30,7 +30,6 @@ export class NewProjectPage implements OnInit {
       }
       this.helpers.showAlert(alert.head, alert.msg);
     } else {
-      window.localStorage.clear();
       window.localStorage.setItem('projectName', this.projectName);
       this.onClosePage();
     }

@@ -51,7 +51,7 @@ export class ViewDayPage implements OnInit {
     });
     modal.onWillDismiss().then(() => {
       this.ngOnInit();
-    })
+    });
     return await modal.present();
   }
 

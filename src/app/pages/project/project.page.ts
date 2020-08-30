@@ -31,7 +31,7 @@ export class ProjectPage implements OnInit {
     if (this.selectedProject) {
       this.projectSrv.retrieveProjectDays(this.selectedProject);
     }
-    this.localDay = window.localStorage.getItem('newDayDate');
+    this.localDay = window.localStorage.getItem(`${this.selectedProject}-temp-day`);
   }
 
   async onNewDay() {
@@ -47,6 +47,19 @@ export class ProjectPage implements OnInit {
 
   onViewDay(day) {
     this.onPresentModal(ViewDayPage, {selectedDay: day, selectedProject: this.selectedProject});
+  }
+
+  onDeleteDay(day) {
+    if (day === this.localDay) {
+      window.localStorage.removeItem(`${this.selectedProject}-temp-day`);
+      this.localDay = '';
+    } else {
+      this.projectSrv.deleteDayFromProject(this.selectedProject, day);
+      for (let i = 0; i < this.loadedDays.length; i++) {
+        if (this.loadedDays[i] === day) {
+          this.loadedDays.splice(i, 1); }
+        }
+    }
   }
   
   async onPresentModal(comp, prop: {}) {
