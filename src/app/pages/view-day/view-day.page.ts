@@ -14,18 +14,20 @@ export class ViewDayPage implements OnInit {
   @Input() selectedDay;
   loadedActivities;
   loadedActivitiesSub;
+  isLoading = true;
 
   categories = {
     travel: 'Travel',
     weather: 'Weather Downtime',
     working: 'Working'
-  }
+  };
 
   constructor(private projectSrv: ProjectService, private modalCtrl: ModalController) { }
 
   ngOnInit() {
     this.loadedActivitiesSub = this.projectSrv.activitiesChanged.subscribe(activities => {
       this.loadedActivities = activities;
+      this.isLoading = false;
     });
     this.projectSrv.retrieveDayActivities(this.selectedProject, this.selectedDay);
   }

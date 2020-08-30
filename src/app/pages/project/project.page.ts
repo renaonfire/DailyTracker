@@ -18,16 +18,19 @@ export class ProjectPage implements OnInit {
   loadedDataSub;
   localName = window.localStorage.getItem('projectName');
   localDay;
+  isLoading = true;
+
 
   constructor(private modalCtrl: ModalController, private projectSrv: ProjectService, private router: Router) { }
 
   ngOnInit() {
     this.loadedDataSub = this.projectSrv.daysChanged.subscribe(days => {
       this.loadedDays = days;
+      this.isLoading = false;
     });
     if (this.selectedProject) {
       this.projectSrv.retrieveProjectDays(this.selectedProject);
-    } 
+    }
     this.localDay = window.localStorage.getItem('newDayDate');
   }
 
@@ -55,7 +58,7 @@ export class ProjectPage implements OnInit {
   }
 
   onCloseProject() {
-    this.modalCtrl.dismiss()
+    this.modalCtrl.dismiss();
     this.router.navigateByUrl('/main/projects-summary');
   }
 

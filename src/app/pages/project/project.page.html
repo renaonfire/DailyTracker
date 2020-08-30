@@ -29,7 +29,10 @@
       </ion-item-options>
     </ion-item-sliding>
   </ion-list>
-  <ion-list *ngIf="loadedDays">
+  <div *ngIf="isLoading" class="spinner">
+    <ion-spinner color="primary"></ion-spinner>
+  </div>
+  <ion-list *ngIf="loadedDays && !isLoading">
     <ion-item-sliding *ngFor="let day of loadedDays; let i = index" [attr.data-index]="i">
       <ion-item (click)="onViewDay(day)">
         <ion-label>{{ day }}</ion-label>

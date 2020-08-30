@@ -24,7 +24,10 @@
         </ion-item-options>
       </ion-item-sliding>
     </ion-list>
-    <ion-list *ngIf="loadedProjects">
+    <div *ngIf="isLoading" class="spinner">
+      <ion-spinner color="primary"></ion-spinner>
+    </div>
+    <ion-list *ngIf="loadedProjects && !isLoading">
       <ion-item-sliding (click)="onClickProject(project)" *ngFor="let project of loadedProjects">
         <ion-item>
           <ion-label>{{ project }}</ion-label>

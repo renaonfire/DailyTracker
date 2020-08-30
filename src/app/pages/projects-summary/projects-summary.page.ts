@@ -18,6 +18,7 @@ export class ProjectsPage implements OnInit {
   loadedProjects;
   loadedProjectsSub: Subscription;
   selectedProject;
+  isLoading = true;
 
   constructor(
     private projectSrv: ProjectService,
@@ -27,6 +28,7 @@ export class ProjectsPage implements OnInit {
   ngOnInit() {
     this.loadedProjectsSub = this.projectSrv.projectChanged.subscribe(project => {
       this.loadedProjects = project;
+      this.isLoading = false;
     });
     this.projectSrv.retrieveProjects();
     this.localName = window.localStorage.getItem('projectName');

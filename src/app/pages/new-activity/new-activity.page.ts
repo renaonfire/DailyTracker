@@ -17,7 +17,7 @@ export class NewActivityPage implements OnInit {
   startTime;
   category;
 
-  constructor(private modalCtrl: ModalController, private projectSrv: ProjectService, private helpers: Helpers) { }
+  constructor(private modalCtrl: ModalController, private projectSrv: ProjectService) { }
 
   ngOnInit() {
     this.projectName = window.localStorage.getItem('projectName');

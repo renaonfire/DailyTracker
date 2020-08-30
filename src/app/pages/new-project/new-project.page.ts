@@ -22,8 +22,8 @@ export class NewProjectPage implements OnInit {
     this.modalCtrl.dismiss();
   }
 
-  onNext() {
-    if (this.existingProjects.find(p => p === this.projectName)) {
+  onSave() {
+    if (this.existingProjects && this.existingProjects.find(p => p === this.projectName)) {
       const alert = {
         head: 'Project Name Already Exists',
         msg: 'Please enter unique project name'
@@ -33,7 +33,6 @@ export class NewProjectPage implements OnInit {
       window.localStorage.clear();
       window.localStorage.setItem('projectName', this.projectName);
       this.onClosePage();
-      this.router.navigateByUrl('/project');
     }
   }
 

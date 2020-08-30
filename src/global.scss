@@ -29,3 +29,15 @@
 .popover-content {
     width: 80%!important;
 }
+
+.spinner {
+    height: 30rem;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+
+.title {
+    font-weight: 700;
+    padding-bottom: 0.5rem;
+}
