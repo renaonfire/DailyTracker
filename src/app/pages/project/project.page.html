@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>{{ selectedProject && selectedProject }}</ion-title>
+    <ion-title>{{ selectedProject ? selectedProject : 'No Project Selected' }}</ion-title>
     <ion-buttons slot="start">
       <ion-button (click)="onCloseProject()">
         <ion-icon name='close'></ion-icon>

@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>{{ selectedDay }}</ion-title>
+    <ion-title>{{ selectedDay ? selectedDay : 'No Day Selected'}}</ion-title>
     <ion-buttons slot="start">
       <ion-button (click)="onCloseDay()">
         <ion-icon name="close"></ion-icon>

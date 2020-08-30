@@ -27,7 +27,7 @@ export class NewProjectPage implements OnInit {
       const alert = {
         head: 'Project Name Already Exists',
         msg: 'Please enter unique project name'
-      }
+      };
       this.helpers.showAlert(alert.head, alert.msg);
     } else {
       window.localStorage.setItem('projectName', this.projectName);
