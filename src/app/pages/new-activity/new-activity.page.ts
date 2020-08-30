@@ -19,12 +19,14 @@ export class NewActivityPage implements OnInit {
   category;
   addedDay;
   existingDays;
+  type;
 
   constructor(private modalCtrl: ModalController, private projectSrv: ProjectService, private helpers: Helpers) { }
 
   ngOnInit() {
     this.projectName = window.localStorage.getItem('projectName');
     this.newDayDate = this.selectedDay ? this.selectedDay : window.localStorage.getItem(`${this.selectedProject}-temp-day`);
+    this.addedDay = this.currentDate();
   }
 
   onTimeChanged(event) {
@@ -53,19 +55,26 @@ export class NewActivityPage implements OnInit {
     this.addedDay = this.helpers.formatDate(event.target.value);
   }
 
+  onSaveDay() {
+    this.newDayDate = this.addedDay;
+    window.localStorage.setItem(`${this.selectedProject}-temp-day`, this.addedDay);
+  }
+
   onSaveActivity() {
     const time = this.startTime ? this.startTime : new Date();
-    const day = this.newDayDate ? this.newDayDate : this.addedDay;
+    const cat = `${this.type} ${this.category}`;
     if (this.selectedProject && this.selectedProject !== this.projectName) {
-      this.projectSrv.onAddActivity(this.selectedProject, day, time, this.category);
-      window.localStorage.removeItem(`${this.selectedProject}-temp-day`);
+      this.projectSrv.onAddActivity(this.selectedProject, this.newDayDate, time, cat);
     } else {
-      this.projectSrv.onCreateProjectWithData(this.projectName, day, time, this.category);
+      this.projectSrv.onCreateProjectWithData(this.projectName, this.newDayDate, time, cat);
       window.localStorage.removeItem('projectName');
-      window.localStorage.removeItem(`${this.selectedProject}-temp-day`);
     }
+    window.localStorage.removeItem(`${this.selectedProject}-temp-day`);
     this.onModalClose();
   }
 
+  onAddCustomCategory() {
+    
+  }
 
 }

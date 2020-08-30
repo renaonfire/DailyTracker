@@ -12,39 +12,58 @@
       <ion-item lines="none">
         <ion-label class="title">Add Day</ion-label>
       </ion-item>
-      <ion-datetime (ionChange)="onDateChanged($event)" [(ngModel)]="addedDay" displayFormat="D MMMM YYYY" value={{currentDate()}} placeholder={{currentDate()}}>
+      <ion-datetime (ionChange)="onDateChanged($event)" [(ngModel)]="addedDay" displayFormat="D MMMM YYYY">
         <ion-label>Select Date</ion-label>
       </ion-datetime>
+      <ion-row>
+        <ion-col size-md='6'>
+          <ion-button expand="block" (click)="onSaveDay()">Save Day</ion-button>
+        </ion-col>
+      </ion-row>
     </div>
+    <div *ngIf="newDayDate">
     <ion-item lines="none">
       <ion-label class="title">Activity</ion-label>
     </ion-item>
     <ion-row>
       <ion-col size-md='6'>
         <ion-item>
-          <ion-label position="floating">Start Time
+          <ion-label position="floating">Time
           </ion-label>
           <ion-datetime [(ngModel)]="startTime" displayFormat="HH:mm" placeholder="Now"></ion-datetime>
         </ion-item>
       </ion-col>
     </ion-row>
     <ion-row>
-  <ion-col size-md='6'>
+  <ion-col size='4'>
+    <ion-item>
+      <ion-label position="floating">Type
+      </ion-label>
+      <ion-select [(ngModel)]="type" interface="popover">
+        <ion-select-option value="start">Start</ion-select-option>
+        <ion-select-option value="finish">Finish</ion-select-option>
+      </ion-select>
+    </ion-item>
+  </ion-col>
+  <ion-col>
     <ion-item>
       <ion-label position="floating">Category
       </ion-label>
       <ion-select [(ngModel)]="category" interface="popover">
         <ion-select-option value="travel">Travel</ion-select-option>
         <ion-select-option value="working">Working</ion-select-option>
-        <ion-select-option value="weather">Weather Downtime</ion-select-option>
-        <ion-select-option value="travel">Travel</ion-select-option>
+        <ion-select-option value="Weather Downtime">Weather Downtime</ion-select-option>
       </ion-select>
     </ion-item>
   </ion-col>
+</ion-row>
+<ion-row class="custom-button">
+    <ion-button (click)="onAddCustomCategory()"color="light"><ion-icon name="add-circle"></ion-icon>Add Custom Category</ion-button>
 </ion-row>
 <ion-row>
   <ion-col size-md='6'>
     <ion-button expand="block" (click)="onSaveActivity()">Save Activity</ion-button>
   </ion-col>
 </ion-row>
+</div>
 </ion-content>

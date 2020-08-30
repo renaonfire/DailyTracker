@@ -16,12 +16,6 @@ export class ViewDayPage implements OnInit {
   loadedActivitiesSub;
   isLoading = true;
 
-  categories = {
-    travel: 'Travel',
-    weather: 'Weather Downtime',
-    working: 'Working'
-  };
-
   constructor(private projectSrv: ProjectService, private modalCtrl: ModalController) { }
 
   ngOnInit() {

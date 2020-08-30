@@ -7,7 +7,7 @@
         </ion-button>
     </ion-buttons>
     <ion-buttons slot="end">
-      <ion-button slot="end" (click)="onAddDayActivity()">Add Activity
+      <ion-button slot="end" (click)="onAddDayActivity()"><ion-icon name="add"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -24,7 +24,7 @@
     <ion-list *ngIf="!isLoading">
     <ion-item-sliding  *ngFor="let activity of loadedActivities; let i = index" [attr.data-index]="i">
       <ion-item>
-        <ion-label>{{ categories[activity.category]}}</ion-label>
+        <ion-label>{{ activity.category }}</ion-label>
         <ion-label class='time'>{{ activity.startTime }}</ion-label>
       </ion-item>
       <ion-item-options side="end">
