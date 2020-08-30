@@ -15,10 +15,6 @@ const routes: Routes = [
     loadChildren: () => import('./pages/tabs/tabs.module').then( m => m.TabsPageModule)
   },
   {
-    path: 'new-day-modal',
-    loadChildren: () => import('./pages/new-day-modal/new-day-modal.module').then( m => m.NewDayModalPageModule)
-  },
-  {
     path: 'project',
     loadChildren: () => import('./pages/project/project.module').then( m => m.ProjectPageModule)
   },

@@ -32,9 +32,6 @@ export class ViewDayPage implements OnInit {
     this.projectSrv.retrieveDayActivities(this.selectedProject, this.selectedDay);
   }
 
-  ionViewWillEnter() {
-    this.ngOnInit();
-  }
   onCloseDay() {
     this.modalCtrl.dismiss();
   }

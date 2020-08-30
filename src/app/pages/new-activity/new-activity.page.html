@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>{{ newDayDate ? newDayDate : 'No Day Selected'}}</ion-title>
+    <ion-title>{{ newDayDate ? newDayDate : 'Add Day'}}</ion-title>
     <ion-buttons slot="start">
       <ion-button (click)="onModalClose()">Close</ion-button>
     </ion-buttons>
@@ -8,6 +8,14 @@
 </ion-header>
 
 <ion-content>
+    <div *ngIf="!newDayDate">
+      <ion-item lines="none">
+        <ion-label class="title">Add Day</ion-label>
+      </ion-item>
+      <ion-datetime (ionChange)="onDateChanged($event)" [(ngModel)]="addedDay" displayFormat="D MMMM YYYY" value={{currentDate()}} placeholder={{currentDate()}}>
+        <ion-label>Select Date</ion-label>
+      </ion-datetime>
+    </div>
     <ion-item lines="none">
       <ion-label class="title">Activity</ion-label>
     </ion-item>

@@ -1,9 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { NewDayModalPage } from '../new-day-modal/new-day-modal.page';
 import { ModalController, AlertController } from '@ionic/angular';
 import { ProjectService } from 'src/app/service/project.service';
 import { Router } from '@angular/router';
 import { ViewDayPage } from '../view-day/view-day.page';
+import { NewActivityPage } from '../new-activity/new-activity.page';
 
 @Component({
   selector: 'app-project',
@@ -38,12 +38,14 @@ export class ProjectPage implements OnInit {
     this.localDay = window.localStorage.getItem(`${this.selectedProject}-temp-day`);
   }
 
-  async onNewDay() {
+  async onAddActivity() {
     const modal = await this.modalCtrl.create({
-      component: NewDayModalPage,
-      cssClass: 'new-day-modal',
+      component: NewActivityPage,
       componentProps: {selectedProject: this.selectedProject, existingDays: this.loadedDays},
       presentingElement: await this.modalCtrl.getTop()
+    });
+    modal.onWillDismiss().then(() => {
+      this.ngOnInit();
     });
     return await modal.present();
   }

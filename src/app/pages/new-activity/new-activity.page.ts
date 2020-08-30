@@ -17,9 +17,10 @@ export class NewActivityPage implements OnInit {
   newDayDate;
   startTime;
   category;
-  creatingDay;
+  addedDay;
+  existingDays;
 
-  constructor(private modalCtrl: ModalController, private projectSrv: ProjectService) { }
+  constructor(private modalCtrl: ModalController, private projectSrv: ProjectService, private helpers: Helpers) { }
 
   ngOnInit() {
     this.projectName = window.localStorage.getItem('projectName');
@@ -44,20 +45,26 @@ export class NewActivityPage implements OnInit {
     return modal.present();
   }
 
+  currentDate() {
+    return this.helpers.formatDate();
+  }
+
+  onDateChanged(event) {
+    this.addedDay = this.helpers.formatDate(event.target.value);
+  }
+
   onSaveActivity() {
     const time = this.startTime ? this.startTime : new Date();
+    const day = this.newDayDate ? this.newDayDate : this.addedDay;
     if (this.selectedProject && this.selectedProject !== this.projectName) {
-      this.projectSrv.onAddActivity(this.selectedProject, this.newDayDate, time, this.category);
+      this.projectSrv.onAddActivity(this.selectedProject, day, time, this.category);
       window.localStorage.removeItem(`${this.selectedProject}-temp-day`);
     } else {
-      this.projectSrv.onCreateProjectWithData(this.projectName, this.newDayDate, time, this.category);
+      this.projectSrv.onCreateProjectWithData(this.projectName, day, time, this.category);
       window.localStorage.removeItem('projectName');
       window.localStorage.removeItem(`${this.selectedProject}-temp-day`);
     }
     this.onModalClose();
-    if (this.creatingDay) {
-      this.onPresentDay();
-    }
   }
 
 

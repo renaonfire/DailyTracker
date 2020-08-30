@@ -4,7 +4,6 @@ import { Project } from 'src/app/interfaces/project';
 import { Subscription } from 'rxjs';
 import { ModalController, AlertController } from '@ionic/angular';
 import { ProjectPage } from '../project/project.page';
-import { NewProjectPage } from '../new-project/new-project.page';
 import { Helpers } from 'src/app/helpers/helpers';
 
 @Component({
@@ -38,17 +37,6 @@ export class ProjectsPage implements OnInit {
 
   ionViewWillEnter() {
     this.ngOnInit();
-  }
-
-  async onPresentNewPageModal() {
-    const modal = await this.modalCtrl.create({
-      component: NewProjectPage,
-      componentProps: {existingProjects: this.loadedProjects}
-    });
-    modal.onWillDismiss().then(() => {
-      this.ngOnInit();
-    });
-    return await modal.present();
   }
 
   async onNewProjectAlert() {
