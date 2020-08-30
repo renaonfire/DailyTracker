@@ -1,8 +1,7 @@
-import { Component, Input, ViewChild, ElementRef, OnInit } from '@angular/core';
-import { ModalController, AlertController } from '@ionic/angular';
+import { Component, Input, OnInit } from '@angular/core';
+import { ModalController } from '@ionic/angular';
 import { NewActivityPage } from '../new-activity/new-activity.page';
 import { Helpers } from 'src/app/helpers/helpers';
-import { ProjectService } from 'src/app/service/project.service';
 
 
 @Component({
@@ -43,19 +42,11 @@ export class NewDayModalPage implements OnInit {
     }
   }
 
-  onSaveDay() {
-    if (this.existingDays && this.existingDays.find(day => day === this.newDayDate)) {
-      this.onShowAlert();
-    } else {
-      window.localStorage.setItem(`${this.selectedProject}-temp-day`, this.newDayDate);
-      this.onCloseModal();
-    }
-  }
-
   async onPresentModal() {
     const modal = await this.modalCtrl.create({
       component: NewActivityPage,
-      componentProps: {selectedProject: this.selectedProject}
+      componentProps: {selectedProject: this.selectedProject, creatingDay: true},
+      presentingElement: await this.modalCtrl.getTop()
     });
     return await modal.present();
   }
@@ -64,8 +55,9 @@ export class NewDayModalPage implements OnInit {
     this.newDayDate = this.helpers.formatDate(event.target.value);
   }
 
-
   onCloseModal() {
-    this.modalCtrl.dismiss();
+    this.modalCtrl.dismiss({
+      animated: false
+    });
   }
 }

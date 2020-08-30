@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NewDayModalPage } from '../new-day-modal/new-day-modal.page';
-import { ModalController } from '@ionic/angular';
+import { ModalController, AlertController } from '@ionic/angular';
 import { ProjectService } from 'src/app/service/project.service';
 import { Router } from '@angular/router';
 import { ViewDayPage } from '../view-day/view-day.page';
@@ -21,7 +21,11 @@ export class ProjectPage implements OnInit {
   isLoading = true;
 
 
-  constructor(private modalCtrl: ModalController, private projectSrv: ProjectService, private router: Router) { }
+  constructor(private modalCtrl: ModalController,
+              private projectSrv: ProjectService,
+              private router: Router,
+              private alertCtrl: AlertController,
+              ) { }
 
   ngOnInit() {
     this.loadedDataSub = this.projectSrv.daysChanged.subscribe(days => {
@@ -37,16 +41,22 @@ export class ProjectPage implements OnInit {
   async onNewDay() {
     const modal = await this.modalCtrl.create({
       component: NewDayModalPage,
-      componentProps: {selectedProject: this.selectedProject, existingDays: this.loadedDays}
+      cssClass: 'new-day-modal',
+      componentProps: {selectedProject: this.selectedProject, existingDays: this.loadedDays},
+      presentingElement: await this.modalCtrl.getTop()
+    });
+    return await modal.present();
+  }
+
+  async onViewDay(day) {
+    const modal = await this.modalCtrl.create({
+      component: ViewDayPage,
+      componentProps: {selectedDay: day, selectedProject: this.selectedProject}
     });
     modal.onWillDismiss().then(() => {
       this.ngOnInit();
     });
     return await modal.present();
-  }
-
-  onViewDay(day) {
-    this.onPresentModal(ViewDayPage, {selectedDay: day, selectedProject: this.selectedProject});
   }
 
   onDeleteDay(day) {

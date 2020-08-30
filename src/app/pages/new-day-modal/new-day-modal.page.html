@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>{{newDayDate ? newDayDate : 'No Day Selected'}}</ion-title>
+    <ion-title>{{selectedProject ? selectedProject : 'No Project Selected'}}</ion-title>
     <ion-buttons slot="start">
       <ion-button (click)="onCloseModal()">Close</ion-button>
     </ion-buttons>
@@ -9,6 +9,9 @@
 
 <ion-content>
   <ion-grid>
+      <ion-item lines="none">
+        <ion-label class=title>Select Date</ion-label>
+      </ion-item>
       <ion-row>
         <ion-col size-md='6'>
           <ion-item>
@@ -21,11 +24,6 @@
       <ion-row>
         <ion-col size-md='6'>
           <ion-button expand="block" (click)="onAddActivity()">Add Activity</ion-button>
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col size-md='6'>
-          <ion-button expand="block" (click)="onSaveDay()">Only Save Day</ion-button>
         </ion-col>
       </ion-row>
   </ion-grid>

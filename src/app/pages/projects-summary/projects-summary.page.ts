@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { ProjectService } from 'src/app/service/project.service';
 import { Project } from 'src/app/interfaces/project';
 import { Subscription } from 'rxjs';
-import { ModalController } from '@ionic/angular';
+import { ModalController, AlertController } from '@ionic/angular';
 import { ProjectPage } from '../project/project.page';
 import { NewProjectPage } from '../new-project/new-project.page';
+import { Helpers } from 'src/app/helpers/helpers';
 
 @Component({
   selector: 'app-projects',
@@ -22,7 +22,9 @@ export class ProjectsPage implements OnInit {
 
   constructor(
     private projectSrv: ProjectService,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private alertCtrl: AlertController,
+    private helpers: Helpers
   ) { }
 
   ngOnInit() {
@@ -38,7 +40,7 @@ export class ProjectsPage implements OnInit {
     this.ngOnInit();
   }
 
-  async onPressNewProject() {
+  async onPresentNewPageModal() {
     const modal = await this.modalCtrl.create({
       component: NewProjectPage,
       componentProps: {existingProjects: this.loadedProjects}
@@ -47,6 +49,31 @@ export class ProjectsPage implements OnInit {
       this.ngOnInit();
     });
     return await modal.present();
+  }
+
+  async onNewProjectAlert() {
+    const alert = await this.alertCtrl.create({
+      header: 'Enter Project Name',
+      inputs: [{name: 'projectName', label: 'Project Name'}],
+      buttons: [{text: 'Cancel', role: 'cancel'}, {text: 'OK', handler: (data) => {
+        this.validateProjectName(data.projectName);
+      }}]
+    });
+    return alert.present();
+  }
+
+  validateProjectName(name: string) {
+    if (this.loadedProjects && this.loadedProjects.find(p => p === name)) {
+      const alert = {
+        head: 'Project Name Already Exists',
+        msg: 'Please enter unique project name'
+      };
+      this.helpers.showAlert(alert.head, alert.msg);
+    } else {
+      window.localStorage.setItem('projectName', name);
+      this.selectedProject = window.localStorage.getItem('projectName');
+      this.onPresentModal();
+    }
   }
 
   onClickProject(project: Project) {

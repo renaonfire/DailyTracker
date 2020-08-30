@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { ProjectService } from 'src/app/service/project.service';
 import { Helpers } from 'src/app/helpers/helpers';
+import { ViewDayPage } from '../view-day/view-day.page';
 
 @Component({
   selector: 'app-new-activity',
@@ -16,6 +17,7 @@ export class NewActivityPage implements OnInit {
   newDayDate;
   startTime;
   category;
+  creatingDay;
 
   constructor(private modalCtrl: ModalController, private projectSrv: ProjectService) { }
 
@@ -29,7 +31,17 @@ export class NewActivityPage implements OnInit {
   }
 
   onModalClose() {
-    this.modalCtrl.dismiss();
+    this.modalCtrl.dismiss({
+      animated: false
+    });
+  }
+
+  async onPresentDay() {
+    const modal = await this.modalCtrl.create({
+      component: ViewDayPage,
+      componentProps: {selectedProject: this.selectedProject, selectedDay: this.newDayDate}
+    });
+    return modal.present();
   }
 
   onSaveActivity() {
@@ -43,6 +55,9 @@ export class NewActivityPage implements OnInit {
       window.localStorage.removeItem(`${this.selectedProject}-temp-day`);
     }
     this.onModalClose();
+    if (this.creatingDay) {
+      this.onPresentDay();
+    }
   }
 
 

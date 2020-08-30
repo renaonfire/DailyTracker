@@ -35,7 +35,6 @@ export class ViewDayPage implements OnInit {
   ionViewWillEnter() {
     this.ngOnInit();
   }
-
   onCloseDay() {
     this.modalCtrl.dismiss();
   }
@@ -47,7 +46,8 @@ export class ViewDayPage implements OnInit {
   async onPresentModal() {
     const modal = await this.modalCtrl.create({
       component: NewActivityPage,
-      componentProps: {selectedProject: this.selectedProject, selectedDay: this.selectedDay}
+      componentProps: {selectedProject: this.selectedProject, selectedDay: this.selectedDay},
+      presentingElement: await this.modalCtrl.getTop()
     });
     modal.onWillDismiss().then(() => {
       this.ngOnInit();
