@@ -26,10 +26,6 @@ const routes: Routes = [
         path: '',
         redirectTo: '/main/home',
         pathMatch: 'full'
-      },
-      {
-        path: 'new-project',
-        loadChildren: () => import('../new-project/new-project.module').then( m => m.NewProjectPageModule)
       }
     ]
   },
