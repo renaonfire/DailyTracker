@@ -90,6 +90,20 @@ export class NewActivityPage implements OnInit {
   onNewCustomCategory() {
     return this.showNewCatAlert();
   }
+
+  validateNewCategory(catName: string) {
+    if (this.existingCategories === catName) {
+      const alert = {
+        head: 'Category Already Exists',
+        message: 'Please enter a different category name'
+      };
+      this.helpers.showAlert(alert.head, alert.message);
+    } else {
+      this.catSrv.createNewCategory(this.newCategory);
+      this.existingCategories.push(this.newCategory);
+      this.category = this.newCategory;
+    }
+  }
   
   async showNewCatAlert() {
     const alert = await this.alertCtrl.create({
@@ -97,7 +111,7 @@ export class NewActivityPage implements OnInit {
       inputs: [{name: 'newCatName'}],
       buttons: [{text: 'Cancel', role: 'cancel'}, {text: 'Save', handler: (data) => {
         this.newCategory = data.newCatName;
-        this.catSrv.createNewCategory(this.newCategory);
+        this.validateNewCategory(this.newCategory);
       }}]
     });
     return await alert.present();
