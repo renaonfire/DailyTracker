@@ -1,8 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, AlertController } from '@ionic/angular';
 import { ProjectService } from 'src/app/service/project.service';
 import { Helpers } from 'src/app/helpers/helpers';
 import { ViewDayPage } from '../view-day/view-day.page';
+import { CategoriesService } from 'src/app/service/categories.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-new-activity',
@@ -20,13 +22,25 @@ export class NewActivityPage implements OnInit {
   addedDay;
   existingDays;
   type;
+  newCategory;
+  existingCategoriesSub: Subscription;
+  existingCategories;
 
-  constructor(private modalCtrl: ModalController, private projectSrv: ProjectService, private helpers: Helpers) { }
+  constructor(private modalCtrl: ModalController,
+              private projectSrv: ProjectService,
+              private helpers: Helpers,
+              private catSrv: CategoriesService,
+              private alertCtrl: AlertController) { }
 
   ngOnInit() {
     this.projectName = window.localStorage.getItem('projectName');
     this.newDayDate = this.selectedDay ? this.selectedDay : window.localStorage.getItem(`${this.selectedProject}-temp-day`);
     this.addedDay = this.currentDate();
+    this.existingCategoriesSub = this.catSrv.categoriesChanged.subscribe(cat => {
+      this.existingCategories = cat;
+      console.log(this.existingCategories);
+    });
+    this.catSrv.retrieveCategories();
   }
 
   onTimeChanged(event) {
@@ -73,8 +87,19 @@ export class NewActivityPage implements OnInit {
     this.onModalClose();
   }
 
-  onAddCustomCategory() {
-    
+  onNewCustomCategory() {
+    return this.showNewCatAlert();
   }
-
+  
+  async showNewCatAlert() {
+    const alert = await this.alertCtrl.create({
+      header: 'Enter Category Name',
+      inputs: [{name: 'newCatName'}],
+      buttons: [{text: 'Cancel', role: 'cancel'}, {text: 'Save', handler: (data) => {
+        this.newCategory = data.newCatName;
+        this.catSrv.createNewCategory(this.newCategory);
+      }}]
+    });
+    return await alert.present();
+  }
 }

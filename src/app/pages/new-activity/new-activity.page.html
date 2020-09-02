@@ -40,8 +40,8 @@
       <ion-label position="floating">Type
       </ion-label>
       <ion-select [(ngModel)]="type" interface="popover">
-        <ion-select-option value="start">Start</ion-select-option>
-        <ion-select-option value="finish">Finish</ion-select-option>
+        <ion-select-option value="Start">Start</ion-select-option>
+        <ion-select-option value="Finish">Finish</ion-select-option>
       </ion-select>
     </ion-item>
   </ion-col>
@@ -50,15 +50,15 @@
       <ion-label position="floating">Category
       </ion-label>
       <ion-select [(ngModel)]="category" interface="popover">
-        <ion-select-option value="travel">Travel</ion-select-option>
-        <ion-select-option value="working">Working</ion-select-option>
-        <ion-select-option value="Weather Downtime">Weather Downtime</ion-select-option>
+        <div *ngFor="let cat of existingCategories">
+          <ion-select-option value={{cat}}>{{cat}}</ion-select-option>
+        </div>
       </ion-select>
     </ion-item>
   </ion-col>
 </ion-row>
 <ion-row class="custom-button">
-    <ion-button (click)="onAddCustomCategory()"color="light"><ion-icon name="add-circle"></ion-icon>Add Custom Category</ion-button>
+    <ion-button (click)="onNewCustomCategory()" color="light"><ion-icon name="add-circle"></ion-icon>Add Custom Category</ion-button>
 </ion-row>
 <ion-row>
   <ion-col size-md='6'>
