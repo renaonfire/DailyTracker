@@ -38,7 +38,6 @@ export class NewActivityPage implements OnInit {
     this.addedDay = this.currentDate();
     this.existingCategoriesSub = this.catSrv.categoriesChanged.subscribe(cat => {
       this.existingCategories = cat;
-      console.log(this.existingCategories);
     });
     this.catSrv.retrieveCategories();
   }
@@ -92,10 +91,11 @@ export class NewActivityPage implements OnInit {
   }
 
   validateNewCategory(catName: string) {
-    if (this.existingCategories === catName) {
+    if (this.existingCategories === catName || this.existingCategories.length >= 10) {
+      const lengthExceeded: boolean = (this.existingCategories.lenght >= 10);
       const alert = {
-        head: 'Category Already Exists',
-        message: 'Please enter a different category name'
+        head: lengthExceeded ? 'Too many entries' : 'Category Already Exists',
+        message: lengthExceeded ? 'Please enter only up to 10 categories' : 'Please enter a different category name'
       };
       this.helpers.showAlert(alert.head, alert.message);
     } else {

@@ -50,9 +50,7 @@
       <ion-label position="floating">Category
       </ion-label>
       <ion-select [(ngModel)]="category" interface="popover">
-        <div *ngFor="let cat of existingCategories">
-          <ion-select-option value={{cat}}>{{cat}}</ion-select-option>
-        </div>
+          <ion-select-option *ngFor="let cat of existingCategories" value={{cat}}>{{cat}}</ion-select-option>
       </ion-select>
     </ion-item>
   </ion-col>
