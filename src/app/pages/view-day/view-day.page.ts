@@ -34,6 +34,15 @@ export class ViewDayPage implements OnInit {
     this.onPresentModal();
   }
 
+  onDeleteActivity(activityId) {
+    this.projectSrv.deleteActivity(this.selectedProject, this.selectedDay, activityId);
+    for (let i = 0; i < this.loadedActivities.length; i++) {
+      if (this.loadedActivities[i].id === activityId) {
+        this.loadedActivities.splice(i, 1);
+      }
+    }
+  }
+
   async onPresentModal() {
     const modal = await this.modalCtrl.create({
       component: NewActivityPage,

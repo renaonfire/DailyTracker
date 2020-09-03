@@ -74,6 +74,7 @@ export class ProjectService {
     const newDay = this.helpers.formatDate(day);
     const newTime = this.helpers.formatTime(start);
     const newActivity: Activities = {
+      id: activityId,
       daysDate: newDay,
       startTime: newTime,
       category: cat
@@ -87,5 +88,9 @@ export class ProjectService {
 
   deleteDayFromProject(projectName: string, day: string) {
     this.projectRef.child(projectName).child('days').child(day).remove();
+  }
+
+  deleteActivity(projectName: string, day: string, id) {
+    this.projectRef.child(projectName).child('days').child(day).child(id).remove();
   }
 }
