@@ -13,8 +13,7 @@ export class SettingsPage {
 
   async openCategorySettings() {
     const modal = await this.modalCtrl.create({
-      component: CategoriesPage,
-      presentingElement: await this.modalCtrl.getTop()
+      component: CategoriesPage
     });
     return await modal.present();
   }

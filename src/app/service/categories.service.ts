@@ -8,7 +8,6 @@ import { Subject } from 'rxjs';
 export class CategoriesService {
 
   categoriesRef = firebase.database().ref('categories');
-
   categoriesChanged = new Subject<Categories[]>();
 
   constructor() { }
@@ -16,6 +15,7 @@ export class CategoriesService {
   createNewCategory(catName: string) {
     const key = this.categoriesRef.push().key;
     const cat: Categories = {
+      id: key,
       name: catName
     };
     this.categoriesRef.child(key).set(cat);
@@ -23,14 +23,18 @@ export class CategoriesService {
 
   retrieveCategories() {
     this.categoriesRef.once('value').then((data) => {
-      const categoryNames = []
+      const categories = [];
       for (const key in data.val()) {
         if (data.val().hasOwnProperty(key)) {
-          categoryNames.push(data.val()[key].name);
+          categories.push(data.val()[key]);
         }
       }
-      this.categoriesChanged.next(categoryNames);
-      return categoryNames;
+      this.categoriesChanged.next(categories);
+      return categories;
     });
+  }
+
+  deleteCategory(id: string) {
+    this.categoriesRef.child(id).remove();
   }
 }

@@ -21,8 +21,10 @@ export class ProjectService {
     const activityId = Math.floor(Math.random() * Math.floor(9999999));
     const newDate = typeof day === 'string' ? day : this.helpers.formatDate(day);
     const newTime = start && typeof start === 'string' ? start : this.helpers.formatTime(start);
+    const creationDate = this.helpers.formatDate();
     const newProject: Project = {
-      projectName: name
+      projectName: name,
+      createdDate: creationDate
     };
     const newActivity: Activities = {
         id: activityId,

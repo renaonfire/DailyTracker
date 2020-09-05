@@ -51,6 +51,7 @@ export class NewActivityPage implements OnInit {
     });
   }
 
+  // TODO: format time to have 2 digits always
   currentTime() {
     this.startTime = this.helpers.formatTime();
   }
@@ -82,12 +83,8 @@ export class NewActivityPage implements OnInit {
     this.onModalClose();
   }
 
-  onNewCustomCategory() {
-    return this.showNewCatAlert();
-  }
-
-  validateNewCategory(catName: string) {
-    if (this.existingCategories === catName || this.existingCategories.length >= 10) {
+  validateNewCategory() {
+    if (this.existingCategories.find(cat => cat.name === this.newCategory ) || this.existingCategories.length >= 10) {
       const lengthExceeded: boolean = (this.existingCategories.lenght >= 10);
       const alert = {
         head: lengthExceeded ? 'Too many entries' : 'Category Already Exists',
@@ -96,7 +93,7 @@ export class NewActivityPage implements OnInit {
       this.helpers.showAlert(alert.head, alert.message);
     } else {
       this.catSrv.createNewCategory(this.newCategory);
-      this.existingCategories.push(this.newCategory);
+      this.existingCategories.push({name: this.newCategory});
       this.category = this.newCategory;
     }
   }
@@ -107,7 +104,7 @@ export class NewActivityPage implements OnInit {
       inputs: [{name: 'newCatName'}],
       buttons: [{text: 'Cancel', role: 'cancel'}, {text: 'Save', handler: (data) => {
         this.newCategory = data.newCatName;
-        this.validateNewCategory(this.newCategory);
+        this.validateNewCategory();
       }}]
     });
     return await alert.present();

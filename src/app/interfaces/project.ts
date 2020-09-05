@@ -1,5 +1,6 @@
 export interface Project {
     projectName?: string;
+    createdDate?: string;
 }
 
 export interface Activities {
