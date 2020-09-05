@@ -19,17 +19,17 @@ export class ProjectService {
 
   onCreateProjectWithData(name: string, day: string, start: string, cat: string) {
     const activityId = Math.floor(Math.random() * Math.floor(9999999));
-    const newDate = this.helpers.formatDate(day);
-    const newTime = start && this.helpers.formatTime(start);
+    const newDate = typeof day === 'string' ? day : this.helpers.formatDate(day);
+    const newTime = start && typeof start === 'string' ? start : this.helpers.formatTime(start);
     const newProject: Project = {
       projectName: name
     };
     const newActivity: Activities = {
+        id: activityId,
         daysDate: newDate,
         startTime: newTime,
         category: cat
     };
-    // TODO add validation to ensure project name is unique
     this.projectRef.child(name).set(newProject);
     this.projectRef.child(name).child('days').child(newDate).child(`${activityId}`).set(newActivity);
   }
@@ -71,8 +71,8 @@ export class ProjectService {
 
   onAddActivity(projectName, day, start, cat) {
     const activityId = Math.floor(Math.random() * Math.floor(9999999));
-    const newDay = this.helpers.formatDate(day);
-    const newTime = this.helpers.formatTime(start);
+    const newDay = typeof day === 'string' ? day : this.helpers.formatDate(day);
+    const newTime = typeof start === 'string' ? start : this.helpers.formatTime(start);
     const newActivity: Activities = {
       id: activityId,
       daysDate: newDay,

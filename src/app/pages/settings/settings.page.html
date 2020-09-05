@@ -1,9 +1,19 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>settings</ion-title>
+    <ion-title>Settings</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <ion-grid>
+    <ion-list>
+      <ion-item (click)="openCategorySettings()">
+        <ion-label>View and Update Categories</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>Other</ion-label>
+      </ion-item>
+    </ion-list>
+  </ion-grid>
 
 </ion-content>

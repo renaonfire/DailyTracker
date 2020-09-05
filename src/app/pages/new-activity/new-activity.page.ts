@@ -2,7 +2,6 @@ import { Component, OnInit, Input } from '@angular/core';
 import { ModalController, AlertController } from '@ionic/angular';
 import { ProjectService } from 'src/app/service/project.service';
 import { Helpers } from 'src/app/helpers/helpers';
-import { ViewDayPage } from '../view-day/view-day.page';
 import { CategoriesService } from 'src/app/service/categories.service';
 import { Subscription } from 'rxjs';
 
@@ -35,15 +34,15 @@ export class NewActivityPage implements OnInit {
   ngOnInit() {
     this.projectName = window.localStorage.getItem('projectName');
     this.newDayDate = this.selectedDay ? this.selectedDay : window.localStorage.getItem(`${this.selectedProject}-temp-day`);
-    this.addedDay = this.currentDate();
     this.existingCategoriesSub = this.catSrv.categoriesChanged.subscribe(cat => {
       this.existingCategories = cat;
     });
     this.catSrv.retrieveCategories();
-  }
-
-  onTimeChanged(event) {
-    this.startTime = event.target.value;
+    if (this.newDayDate) {
+      this.currentTime();
+    } else {
+      this.currentDate();
+    }
   }
 
   onModalClose() {
@@ -52,16 +51,12 @@ export class NewActivityPage implements OnInit {
     });
   }
 
-  async onPresentDay() {
-    const modal = await this.modalCtrl.create({
-      component: ViewDayPage,
-      componentProps: {selectedProject: this.selectedProject, selectedDay: this.newDayDate}
-    });
-    return modal.present();
+  currentTime() {
+    this.startTime = this.helpers.formatTime();
   }
 
   currentDate() {
-    return this.helpers.formatDate();
+    this.addedDay = this.helpers.formatDate();
   }
 
   onDateChanged(event) {
@@ -70,7 +65,8 @@ export class NewActivityPage implements OnInit {
 
   onSaveDay() {
     this.newDayDate = this.addedDay;
-    window.localStorage.setItem(`${this.selectedProject}-temp-day`, this.addedDay);
+    window.localStorage.setItem(`${this.selectedProject}-temp-day`, this.newDayDate);
+    this.currentTime();
   }
 
   onSaveActivity() {
