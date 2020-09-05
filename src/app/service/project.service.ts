@@ -34,6 +34,7 @@ export class ProjectService {
     };
     this.projectRef.child(name).set(newProject);
     this.projectRef.child(name).child('days').child(newDate).child(`${activityId}`).set(newActivity);
+    window.localStorage.setItem('latestProject', name);
   }
 
   retrieveProjects() {
@@ -94,5 +95,20 @@ export class ProjectService {
 
   deleteActivity(projectName: string, day: string, id) {
     this.projectRef.child(projectName).child('days').child(day).child(id).remove();
+  }
+
+  updateLastViewed(projectName: string) {
+    const storage = window.localStorage;
+    // const today = new Date();
+    const latest = storage.getItem('latestViewed');
+    // this.projectRef.child(projectName).child('lastViewed').set({lastViewed: today});
+    const second = storage.getItem('secondViewed');
+    storage.setItem('latestViewed', projectName);
+    if (latest) {
+      storage.setItem('secondViewed', latest);
+    }
+    if (second) {
+      storage.setItem('thirdViewed', second);
+    }
   }
 }

@@ -67,6 +67,7 @@ export class ProjectsPage implements OnInit {
   onClickProject(project: Project) {
     this.selectedProject = project;
     this.onPresentModal();
+    this.projectSrv.updateLastViewed(this.selectedProject);
   }
 
   onDeleteProject(project: string) {

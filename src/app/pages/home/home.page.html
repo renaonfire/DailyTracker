@@ -3,9 +3,6 @@
     <ion-title>
       Home
     </ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="onCreateProject()">New Project</ion-button>
-    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -13,29 +10,28 @@
   <ion-grid>
     <ion-row>
       <ion-col size-md='6'>
-        <ion-card (click)="onShowLatestProject()">
-          <ion-item lines="none">
-            <ion-icon name="layers"></ion-icon>
-            <ion-label class="title">Latest Project</ion-label>
-          </ion-item>
-          <ion-card-content>
-            <ion-item lines="none">
-              <div>Date</div>
-              <ion-label>Activity</ion-label>
-            </ion-item>
-          </ion-card-content>
-        </ion-card>
+        <ion-button expand="block" (click)="onNewProject()">Create New Project</ion-button>
       </ion-col>
     </ion-row>
-    <ion-row>
-      <ion-col size-md='6'>
-        <ion-card>
-          <ion-item lines="none">
-            <ion-icon name="layers"></ion-icon>
-            <ion-label class="title">Recent Projects</ion-label>
-          </ion-item>
-        </ion-card>
-      </ion-col>
-    </ion-row>
+    <ion-item lines="none">
+      <ion-icon name="layers"></ion-icon>
+      <ion-label class="title">Latest Projects</ion-label>
+    </ion-item>
+      <ion-card (click)="onShowLatestProject()">
+        <ion-card-content>{{ latestProject }}</ion-card-content>
+      </ion-card>
+      <ion-item lines="none">
+        <ion-icon name="layers"></ion-icon>
+        <ion-label class="title">Recent Projects</ion-label>
+      </ion-item>
+      <ion-card>
+        <ion-card-content>{{latestViewed}}</ion-card-content>
+      </ion-card>
+      <ion-card>
+        <ion-card-content>{{secondViewed}}</ion-card-content>
+      </ion-card>
+      <ion-card>
+        <ion-card-content>{{thirdViewed}}</ion-card-content>
+      </ion-card>
   </ion-grid>
 </ion-content>

@@ -1,7 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ModalController, AlertController } from '@ionic/angular';
+import { ModalController } from '@ionic/angular';
 import { ProjectService } from 'src/app/service/project.service';
-import { Router } from '@angular/router';
 import { ViewDayPage } from '../view-day/view-day.page';
 import { NewActivityPage } from '../new-activity/new-activity.page';
 
@@ -22,9 +21,7 @@ export class ProjectPage implements OnInit {
 
 
   constructor(private modalCtrl: ModalController,
-              private projectSrv: ProjectService,
-              private router: Router,
-              private alertCtrl: AlertController,
+              private projectSrv: ProjectService
               ) { }
 
   ngOnInit() {
@@ -84,7 +81,6 @@ export class ProjectPage implements OnInit {
 
   onCloseProject() {
     this.modalCtrl.dismiss();
-    this.router.navigateByUrl('/main/projects-summary');
   }
 
 }
