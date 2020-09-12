@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 })
 export class AuthService {
 
-  authState = new BehaviorSubject(true);
+  authState = new BehaviorSubject(false);
 
   constructor(private auth: AngularFireAuth, private alertCtrl: AlertController, private router: Router) { }
 
@@ -24,8 +24,12 @@ export class AuthService {
     } else {
       try {
         await this.auth.createUserWithEmailAndPassword(email, password);
+        this.auth.onAuthStateChanged((user) => {
+          localStorage.setItem('currentUserId', user.uid);
+        });
+        localStorage.setItem('currentUser', email);
         this.authState.next(true);
-        this.router.navigateByUrl('/home');
+        this.router.navigateByUrl('/tabs');
       } catch (err) {
         console.log(err);
         this.showAlert(err);
@@ -39,8 +43,12 @@ export class AuthService {
         email,
         password
       );
+      this.auth.onAuthStateChanged((user) => {
+        localStorage.setItem('currentUserId', user.uid);
+      });
+      localStorage.setItem('currentUser', email);
       this.authState.next(true);
-      this.router.navigateByUrl('/home');
+      this.router.navigateByUrl('/tabs');
     } catch (err) {
         this.showAlert(err);
     }

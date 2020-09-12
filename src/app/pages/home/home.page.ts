@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ModalController } from '@ionic/angular';
+import { AlertController, ModalController } from '@ionic/angular';
 import { ProjectPage } from '../project/project.page';
 import { Subscription } from 'rxjs';
 import { ProjectService } from 'src/app/service/project.service';
+import { Helpers } from 'src/app/helpers/helpers';
 
 @Component({
   selector: 'app-home',
@@ -16,34 +17,75 @@ export class HomePage implements OnInit {
   latestViewed;
   secondViewed;
   thirdViewed;
+  loadedProjects;
+  loadedProjectsSub: Subscription;
+  selectedProject;
+  incompleteProeject;
 
-  constructor(private modalCtrl: ModalController, private projectSrv: ProjectService) {}
+  constructor(private modalCtrl: ModalController,
+              private projectSrv: ProjectService,
+              private alertCtrl: AlertController,
+              private helpers: Helpers) {}
 
   ngOnInit() {
     this.latestProject = window.localStorage.getItem('latestProject');
     this.latestViewed = window.localStorage.getItem('latestViewed');
     this.secondViewed = window.localStorage.getItem('secondViewed');
     this.thirdViewed = window.localStorage.getItem('thirdViewed');
+    this.incompleteProeject = window.localStorage.getItem('projectName');
+    this.loadedProjectsSub = this.projectSrv.projectChanged.subscribe(projects => {
+      this.loadedProjects = projects;
+    });
+    this.projectSrv.retrieveProjects();
   }
 
   ionViewWillEnter() {
     this.ngOnInit();
   }
 
-  onNewProject() {
-    
+  async onNewProjectAlert() {
+    const alert = await this.alertCtrl.create({
+      header: 'Enter Project Name',
+      inputs: [{name: 'projectName', label: 'Project Name'}],
+      buttons: [{text: 'Cancel', role: 'cancel'}, {text: 'OK', handler: (data) => {
+        this.validateProjectName(data.projectName);
+      }}]
+    });
+    return alert.present();
   }
 
-  async onShowLatestProject() {
+  validateProjectName(name: string) {
+    if (this.loadedProjects && this.loadedProjects.find(p => p === name)) {
+      const alert = {
+        head: 'Project Name Already Exists',
+        msg: 'Please enter unique project name'
+      };
+      this.helpers.showAlert(alert.head, alert.msg);
+    } else {
+      window.localStorage.setItem('projectName', name);
+      this.selectedProject = window.localStorage.getItem('projectName');
+      this.onPresentModal();
+    }
+  }
+
+  async onPresentModal() {
     const modal = await this.modalCtrl.create({
       component: ProjectPage,
-      componentProps: {selectedProject: this.latestProject},
+      componentProps: {selectedProject: this.selectedProject}
     });
-    this.projectSrv.updateLastViewed(this.latestProject);
+    modal.onWillDismiss().then(() => {
+      this.ngOnInit();
+    });
     return await modal.present();
   }
 
-  onCreateProject() {
+  async onShowProject(project: string) {
+    const modal = await this.modalCtrl.create({
+      component: ProjectPage,
+      componentProps: {selectedProject: project},
+    });
+    this.projectSrv.updateLastViewed(project);
+    return await modal.present();
   }
 
 }

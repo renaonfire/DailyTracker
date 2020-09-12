@@ -7,7 +7,8 @@ import { Subject } from 'rxjs';
 })
 export class CategoriesService {
 
-  categoriesRef = firebase.database().ref('categories');
+  userId = localStorage.getItem('currentUserId');
+  categoriesRef = firebase.database().ref(this.userId).child('categories');
   categoriesChanged = new Subject<Categories[]>();
 
   constructor() { }

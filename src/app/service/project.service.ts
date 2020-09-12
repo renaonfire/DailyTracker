@@ -12,8 +12,9 @@ export class ProjectService {
   projectChanged = new Subject<Project[]>();
   daysChanged = new Subject<{}>();
   activitiesChanged = new Subject<{}>();
+  userId = localStorage.getItem('currentUserId');
 
-  projectRef = firebase.database().ref('projects');
+  projectRef = firebase.database().ref(this.userId).child('project');
 
   constructor(private helpers: Helpers) {}
 

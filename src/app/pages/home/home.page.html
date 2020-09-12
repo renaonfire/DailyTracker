@@ -10,27 +10,34 @@
   <ion-grid>
     <ion-row>
       <ion-col size-md='6'>
-        <ion-button expand="block" (click)="onNewProject()">Create New Project</ion-button>
+        <ion-button expand="block" (click)="onNewProjectAlert()">Create New Project</ion-button>
       </ion-col>
     </ion-row>
     <ion-item lines="none">
       <ion-icon name="layers"></ion-icon>
-      <ion-label class="title">Latest Projects</ion-label>
+      <ion-label class="title">Latest Project</ion-label>
     </ion-item>
-      <ion-card (click)="onShowLatestProject()">
+      <ion-card (click)="onShowProject(latestProject)">
         <ion-card-content>{{ latestProject }}</ion-card-content>
       </ion-card>
       <ion-item lines="none">
         <ion-icon name="layers"></ion-icon>
+        <ion-label class="title">Incomplete Project</ion-label>
+      </ion-item>
+        <ion-card (click)="onShowProject(incompleteProeject)">
+          <ion-card-content>{{ incompleteProeject }}</ion-card-content>
+        </ion-card>
+      <ion-item lines="none">
+        <ion-icon name="layers"></ion-icon>
         <ion-label class="title">Recent Projects</ion-label>
       </ion-item>
-      <ion-card>
+      <ion-card (click)="onShowProject(latestViewed)">
         <ion-card-content>{{latestViewed}}</ion-card-content>
       </ion-card>
-      <ion-card>
+      <ion-card (click)="onShowProject(secondViewed)">
         <ion-card-content>{{secondViewed}}</ion-card-content>
       </ion-card>
-      <ion-card>
+      <ion-card (click)="onShowProject(thirdViewed)">
         <ion-card-content>{{thirdViewed}}</ion-card-content>
       </ion-card>
   </ion-grid>
