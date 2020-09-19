@@ -5,6 +5,7 @@ import { ProjectPage } from '../project/project.page';
 import { Subscription } from 'rxjs';
 import { ProjectService } from 'src/app/service/project.service';
 import { Helpers } from 'src/app/helpers/helpers';
+import { ProfilePage } from '../profile/profile.page';
 
 @Component({
   selector: 'app-home',
@@ -20,6 +21,7 @@ export class HomePage implements OnInit {
   latestProjectSub: Subscription;
   selectedProject;
   incompleteProject;
+  isLoading = true;
 
   constructor(private modalCtrl: ModalController,
               private projectSrv: ProjectService,
@@ -29,18 +31,24 @@ export class HomePage implements OnInit {
   ngOnInit() {
     this.recentItems = JSON.parse(window.localStorage.getItem('recentItems'));
     this.incompleteProject = window.localStorage.getItem('projectName');
+    // TODO refactor to not have to retrieve all projects to check name
     this.loadedProjectsSub = this.projectSrv.projectChanged.subscribe(projects => {
       this.loadedProjects = projects;
     });
     this.projectSrv.retrieveProjects();
     this.latestProjectSub = this.projectSrv.latestProjectChanged.subscribe(project => {
       this.latestProject = project;
+      this.isLoading = false;
     });
     this.projectSrv.retrieveLatestProject();
   }
 
   ionViewWillEnter() {
     this.ngOnInit();
+  }
+
+  onAvatarClick() {
+    this.onPresentModal(ProfilePage);
   }
 
   async onNewProjectAlert() {
@@ -64,18 +72,20 @@ export class HomePage implements OnInit {
     } else {
       window.localStorage.setItem('projectName', name);
       this.selectedProject = window.localStorage.getItem('projectName');
-      this.onPresentModal();
+      this.onPresentModal(ProjectPage, true);
     }
   }
 
-  async onPresentModal() {
+  async onPresentModal(page, update?: boolean) {
     const modal = await this.modalCtrl.create({
-      component: ProjectPage,
+      component: page,
       componentProps: {selectedProject: this.selectedProject}
     });
-    modal.onWillDismiss().then(() => {
-      this.ngOnInit();
-    });
+    if (update) {
+      modal.onWillDismiss().then(() => {
+        this.ngOnInit();
+      });
+    }
     return await modal.present();
   }
 

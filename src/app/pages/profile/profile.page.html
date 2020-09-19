@@ -1,0 +1,21 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="onClose()"><ion-icon name="close"></ion-icon></ion-button>
+    </ion-buttons>
+    <ion-title>Your Profile</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-avatar>
+      <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y">
+    </ion-avatar>
+    <ion-item>
+      <ion-label>Email address</ion-label>
+      <ion-input value={{userEmail}}></ion-input>
+    </ion-item>
+  </ion-grid>
+
+</ion-content>

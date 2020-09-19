@@ -1,5 +1,10 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
+    <ion-buttons slot="start">
+        <ion-avatar (click)="onAvatarClick()" class="small-avatar">
+          <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y">
+        </ion-avatar>
+    </ion-buttons>
     <ion-title>
       Home
     </ion-title>
@@ -18,14 +23,16 @@
       <ion-label class="title">Latest Project</ion-label>
     </ion-item>
       <ion-card (click)="onShowProject(latestProject)">
-        <ion-card-content>{{ latestProject }}</ion-card-content>
+        <ion-spinner *ngIf="isLoading"></ion-spinner>
+        <ion-card-content *ngIf="latestProject && !isLoading">{{ latestProject }}</ion-card-content>
+        <ion-card-content *ngIf="!latestProject && !isLoading">No projects created</ion-card-content>
       </ion-card>
       <div *ngIf="incompleteProject">
         <ion-item lines="none">
           <ion-icon name="layers"></ion-icon>
           <ion-label class="title">Incomplete Project</ion-label>
         </ion-item>
-          <ion-card (click)="onShowProject(incompleteProject)">
+          <ion-card color="danger" (click)="onShowProject(incompleteProject)">
             <ion-card-content>{{ incompleteProject }}</ion-card-content>
           </ion-card>
       </div>
@@ -36,5 +43,8 @@
       <ion-card *ngFor="let item of recentItems" (click)="onShowProject(item)">
         <ion-card-content>{{item}}</ion-card-content>
       </ion-card>
+      <ion-item *ngIf="!recentItems" lines="none">
+        <p>No recent projects</p>
+      </ion-item>
   </ion-grid>
 </ion-content>
