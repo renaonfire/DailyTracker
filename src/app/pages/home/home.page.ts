@@ -14,13 +14,12 @@ import { Helpers } from 'src/app/helpers/helpers';
 export class HomePage implements OnInit {
 
   latestProject;
-  latestViewed;
-  secondViewed;
-  thirdViewed;
+  recentItems;
   loadedProjects;
   loadedProjectsSub: Subscription;
+  latestProjectSub: Subscription;
   selectedProject;
-  incompleteProeject;
+  incompleteProject;
 
   constructor(private modalCtrl: ModalController,
               private projectSrv: ProjectService,
@@ -28,15 +27,16 @@ export class HomePage implements OnInit {
               private helpers: Helpers) {}
 
   ngOnInit() {
-    this.latestProject = window.localStorage.getItem('latestProject');
-    this.latestViewed = window.localStorage.getItem('latestViewed');
-    this.secondViewed = window.localStorage.getItem('secondViewed');
-    this.thirdViewed = window.localStorage.getItem('thirdViewed');
-    this.incompleteProeject = window.localStorage.getItem('projectName');
+    this.recentItems = JSON.parse(window.localStorage.getItem('recentItems'));
+    this.incompleteProject = window.localStorage.getItem('projectName');
     this.loadedProjectsSub = this.projectSrv.projectChanged.subscribe(projects => {
       this.loadedProjects = projects;
     });
     this.projectSrv.retrieveProjects();
+    this.latestProjectSub = this.projectSrv.latestProjectChanged.subscribe(project => {
+      this.latestProject = project;
+    });
+    this.projectSrv.retrieveLatestProject();
   }
 
   ionViewWillEnter() {

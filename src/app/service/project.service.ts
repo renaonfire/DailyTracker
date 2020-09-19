@@ -10,11 +10,14 @@ import { Helpers } from '../helpers/helpers';
 export class ProjectService {
 
   projectChanged = new Subject<Project[]>();
+  latestProjectChanged = new Subject<string>();
   daysChanged = new Subject<{}>();
   activitiesChanged = new Subject<{}>();
   userId = localStorage.getItem('currentUserId');
-
+  recentItems = JSON.parse(localStorage.getItem('recentItems'));
   projectRef = firebase.database().ref(this.userId).child('project');
+  latestProjectRef = firebase.database().ref(this.userId).child('latest');
+  recentProjectsRef = firebase.database().ref(this.userId).child('recentProjects');
 
   constructor(private helpers: Helpers) {}
 
@@ -35,7 +38,7 @@ export class ProjectService {
     };
     this.projectRef.child(name).set(newProject);
     this.projectRef.child(name).child('days').child(newDate).child(`${activityId}`).set(newActivity);
-    window.localStorage.setItem('latestProject', name);
+    this.latestProjectRef.child(name).set(newProject);
   }
 
   retrieveProjects() {
@@ -47,6 +50,19 @@ export class ProjectService {
         }
       }
       this.projectChanged.next(projectName);
+      return projectName;
+    });
+  }
+
+  retrieveLatestProject() {
+    this.latestProjectRef.once('value').then(resData => {
+      let projectName = '';
+      for ( const name in resData.val()) {
+        if (resData.val()) {
+          projectName = resData.val()[name].projectName;
+        }
+      }
+      this.latestProjectChanged.next(projectName);
       return projectName;
     });
   }
@@ -99,17 +115,15 @@ export class ProjectService {
   }
 
   updateLastViewed(projectName: string) {
-    const storage = window.localStorage;
-    // const today = new Date();
-    const latest = storage.getItem('latestViewed');
-    // this.projectRef.child(projectName).child('lastViewed').set({lastViewed: today});
-    const second = storage.getItem('secondViewed');
-    storage.setItem('latestViewed', projectName);
-    if (latest) {
-      storage.setItem('secondViewed', latest);
+    if (this.recentItems) {
+      this.recentItems = (this.recentItems || []).filter((items) => items !== projectName);
+      this.recentItems.unshift(projectName);
+      this.recentItems.length = Math.min(this.recentItems.length, 3);
+      this.recentItems = [...this.recentItems];
     }
-    if (second) {
-      storage.setItem('thirdViewed', second);
+    else {
+      this.recentItems = [projectName];
     }
+    window.localStorage.setItem('recentItems', JSON.stringify(this.recentItems));
   }
 }

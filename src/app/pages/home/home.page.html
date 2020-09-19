@@ -20,25 +20,21 @@
       <ion-card (click)="onShowProject(latestProject)">
         <ion-card-content>{{ latestProject }}</ion-card-content>
       </ion-card>
-      <ion-item lines="none">
-        <ion-icon name="layers"></ion-icon>
-        <ion-label class="title">Incomplete Project</ion-label>
-      </ion-item>
-        <ion-card (click)="onShowProject(incompleteProeject)">
-          <ion-card-content>{{ incompleteProeject }}</ion-card-content>
-        </ion-card>
+      <div *ngIf="incompleteProject">
+        <ion-item lines="none">
+          <ion-icon name="layers"></ion-icon>
+          <ion-label class="title">Incomplete Project</ion-label>
+        </ion-item>
+          <ion-card (click)="onShowProject(incompleteProject)">
+            <ion-card-content>{{ incompleteProject }}</ion-card-content>
+          </ion-card>
+      </div>
       <ion-item lines="none">
         <ion-icon name="layers"></ion-icon>
         <ion-label class="title">Recent Projects</ion-label>
       </ion-item>
-      <ion-card (click)="onShowProject(latestViewed)">
-        <ion-card-content>{{latestViewed}}</ion-card-content>
-      </ion-card>
-      <ion-card (click)="onShowProject(secondViewed)">
-        <ion-card-content>{{secondViewed}}</ion-card-content>
-      </ion-card>
-      <ion-card (click)="onShowProject(thirdViewed)">
-        <ion-card-content>{{thirdViewed}}</ion-card-content>
+      <ion-card *ngFor="let item of recentItems" (click)="onShowProject(item)">
+        <ion-card-content>{{item}}</ion-card-content>
       </ion-card>
   </ion-grid>
 </ion-content>

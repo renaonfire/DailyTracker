@@ -29,7 +29,7 @@ export class AuthService {
         });
         localStorage.setItem('currentUser', email);
         this.authState.next(true);
-        this.router.navigateByUrl('/tabs');
+        this.router.navigateByUrl('/main');
       } catch (err) {
         console.log(err);
         this.showAlert(err);
@@ -48,7 +48,7 @@ export class AuthService {
       });
       localStorage.setItem('currentUser', email);
       this.authState.next(true);
-      this.router.navigateByUrl('/tabs');
+      this.router.navigateByUrl('/main');
     } catch (err) {
         this.showAlert(err);
     }
