@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs';
 import { ProjectService } from 'src/app/service/project.service';
 import { Helpers } from 'src/app/helpers/helpers';
 import { ProfilePage } from '../profile/profile.page';
+import { UserService } from 'src/app/service/user.service';
 
 @Component({
   selector: 'app-home',
@@ -21,12 +22,14 @@ export class HomePage implements OnInit {
   latestProjectSub: Subscription;
   selectedProject;
   incompleteProject;
+  userImage = '../../../assets/avatar.png';
   isLoading = true;
 
   constructor(private modalCtrl: ModalController,
               private projectSrv: ProjectService,
               private alertCtrl: AlertController,
-              private helpers: Helpers) {}
+              private helpers: Helpers,
+              private userSrv: UserService) {}
 
   ngOnInit() {
     this.recentItems = JSON.parse(window.localStorage.getItem('recentItems'));
@@ -41,6 +44,7 @@ export class HomePage implements OnInit {
       this.isLoading = false;
     });
     this.projectSrv.retrieveLatestProject();
+    this.userSrv.retrieveUserDetails();
   }
 
   ionViewWillEnter() {

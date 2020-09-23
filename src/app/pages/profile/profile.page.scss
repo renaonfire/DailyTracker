@@ -1,0 +1,26 @@
+.avatar-container {
+    display: flex;
+    justify-content: center;
+    padding: 1rem;
+
+    ion-avatar {
+        height: 4.375rem;
+        width: 4.375rem;
+        border: solid 0.0625rem gray;
+    }
+
+    ion-icon {
+        border-radius: 50%;
+        background-color: rgba(0, 0, 0, 0.7);
+        padding: 0.1875rem;
+        position: absolute;
+        left: 54%;
+        top: 8%;
+    }
+}
+
+.save-button {
+    position: absolute;
+    bottom: 1rem;
+    width: 96%;
+}

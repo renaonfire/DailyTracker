@@ -13,11 +13,11 @@ export class ProjectService {
   latestProjectChanged = new Subject<string>();
   daysChanged = new Subject<{}>();
   activitiesChanged = new Subject<{}>();
-  userId = localStorage.getItem('currentUserId');
+  userId = localStorage.getItem('currentUserId') || '';
   recentItems = JSON.parse(localStorage.getItem('recentItems'));
-  projectRef = firebase.database().ref(this.userId).child('project');
-  latestProjectRef = firebase.database().ref(this.userId).child('latest');
-  recentProjectsRef = firebase.database().ref(this.userId).child('recentProjects');
+  projectRef = this.userId && firebase.database().ref(this.userId).child('project');
+  latestProjectRef = this.userId && firebase.database().ref(this.userId).child('latest');
+  recentProjectsRef = this.userId && firebase.database().ref(this.userId).child('recentProjects');
 
   constructor(private helpers: Helpers) {}
 

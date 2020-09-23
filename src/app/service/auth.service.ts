@@ -3,6 +3,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { AlertController } from '@ionic/angular';
 import { BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ export class AuthService {
 
   authState = new BehaviorSubject(false);
 
-  constructor(private auth: AngularFireAuth, private alertCtrl: AlertController, private router: Router) { }
+  constructor(private auth: AngularFireAuth, private alertCtrl: AlertController, private router: Router, private userSrv: UserService) { }
 
   async onRegister(email: string, password: string, rpassword: string) {
     if (password !== rpassword) {
@@ -26,10 +27,11 @@ export class AuthService {
         await this.auth.createUserWithEmailAndPassword(email, password);
         this.auth.onAuthStateChanged((user) => {
           localStorage.setItem('currentUserId', user.uid);
+          localStorage.setItem('currentUser', email);
         });
-        localStorage.setItem('currentUser', email);
         this.authState.next(true);
         this.router.navigateByUrl('/main');
+        this.userSrv.createUserDetails(email);
       } catch (err) {
         console.log(err);
         this.showAlert(err);
