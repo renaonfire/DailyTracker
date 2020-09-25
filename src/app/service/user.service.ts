@@ -15,27 +15,33 @@ export class UserService {
   constructor() { }
 
   createUserDetails(email: string) {
-    const newUser: User = {
+    if (this.userRef) {
+      const newUser: User = {
         email
     };
-    this.userRef.set(newUser);
+      this.userRef.set(newUser);
+    }
   }
 
   updateUserDetails(email?: string, name?: string, surname?: string) {
-    const user: User = {
-      email,
-      name,
-      surname
-    };
-    this.userRef.set(user);
+    if (this.userRef) {
+      const user: User = {
+        email,
+        name,
+        surname
+      };
+      this.userRef.set(user);
+    }
   }
 
   retrieveUserDetails() {
-    this.userRef.once('value').then((data) => {
-      if (data.val()) {
-        const user = data.val();
-        this.userDetailsChanged.next(user);
-      };
-    });
+    if (this.userRef) {
+      this.userRef.once('value').then((data) => {
+        if (data.val()) {
+          const user = data.val();
+          this.userDetailsChanged.next(user);
+        }
+      });
+    }
   }
 }

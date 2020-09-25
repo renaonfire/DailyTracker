@@ -69,6 +69,9 @@ export class AuthService {
 
   // TODO check if this is used
   isAuthenticated() {
+    if (localStorage.getItem('currentUser')) {
+      this.authState.next(true);
+    }
     return this.authState.value;
   }
 

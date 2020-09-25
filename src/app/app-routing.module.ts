@@ -16,24 +16,30 @@ const routes: Routes = [
     loadChildren: () => import('./pages/tabs/tabs.module').then( m => m.TabsPageModule)
   },
   {
-    path: 'project',
-    loadChildren: () => import('./pages/project/project.module').then( m => m.ProjectPageModule)
-  },
-  {
-    path: 'new-activity',
-    loadChildren: () => import('./pages/new-activity/new-activity.module').then( m => m.NewActivityPageModule)
-  },
-  {
-    path: 'view-day',
-    loadChildren: () => import('./pages/view-day/view-day.module').then( m => m.ViewDayPageModule)
-  },
-  {
-    path: 'categories',
-    loadChildren: () => import('./pages/categories/categories.module').then( m => m.CategoriesPageModule)
-  },
-  {
-    path: 'profile',
-    loadChildren: () => import('./pages/profile/profile.module').then( m => m.ProfilePageModule)
+    path: 'modals',
+    canActivate: [GuardGuard],
+    children: [
+      {
+        path: 'project',
+        loadChildren: () => import('./pages/project/project.module').then( m => m.ProjectPageModule)
+      },
+      {
+        path: 'new-activity',
+        loadChildren: () => import('./pages/new-activity/new-activity.module').then( m => m.NewActivityPageModule)
+      },
+      {
+        path: 'view-day',
+        loadChildren: () => import('./pages/view-day/view-day.module').then( m => m.ViewDayPageModule)
+      },
+      {
+        path: 'categories',
+        loadChildren: () => import('./pages/categories/categories.module').then( m => m.CategoriesPageModule)
+      },
+      {
+        path: 'profile',
+        loadChildren: () => import('./pages/profile/profile.module').then( m => m.ProfilePageModule)
+      }
+    ]
   }
 ];
 
