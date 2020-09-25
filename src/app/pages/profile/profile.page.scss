@@ -24,3 +24,13 @@
     bottom: 1rem;
     width: 96%;
 }
+
+.logout {
+    --color: var(--ion-color-danger);
+    display: flex;
+    justify-content: space-between;
+
+    p {
+        padding-right: 1.25rem;
+    }
+}

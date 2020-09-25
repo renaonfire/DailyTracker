@@ -46,7 +46,7 @@ export class AuthService {
         password
       );
       this.auth.onAuthStateChanged((user) => {
-        localStorage.setItem('currentUserId', user.uid);
+        localStorage.setItem('currentUserId', user?.uid);
       });
       localStorage.setItem('currentUser', email);
       this.authState.next(true);
@@ -67,7 +67,15 @@ export class AuthService {
     alert.present();
   }
 
+  // TODO check if this is used
   isAuthenticated() {
     return this.authState.value;
+  }
+
+  async logOut() {
+    this.auth.signOut().then(() => {
+    }).catch((error) => {
+      this.showAlert(error);
+    });
   }
 }

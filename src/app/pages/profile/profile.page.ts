@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ActionSheetController, ModalController } from '@ionic/angular';
+import { Router } from '@angular/router';
+import { ActionSheetController, AlertController, ModalController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
+import { AuthService } from 'src/app/service/auth.service';
 import { UserService } from 'src/app/service/user.service';
 
 @Component({
@@ -16,7 +18,12 @@ export class ProfilePage implements OnInit {
   userSurname;
   userDetailsSub: Subscription;
 
-  constructor( private modalCtrl: ModalController, private actionCtrl: ActionSheetController, private userSrv: UserService) { }
+  constructor(private modalCtrl: ModalController,
+              private actionCtrl: ActionSheetController,
+              private userSrv: UserService,
+              private authSrv: AuthService,
+              private alertCtrl: AlertController,
+              private router: Router) { }
 
   ngOnInit() {
     this.userDetailsSub = this.userSrv.userDetailsChanged.subscribe(user => {
@@ -44,5 +51,23 @@ export class ProfilePage implements OnInit {
 
   onSaveChanges() {
     this.userSrv.updateUserDetails(this.userEmail, this.userName, this.userSurname);
+  }
+
+  onLogOut() {
+    this.onPresentAlert();
+  }
+
+  async onPresentAlert() {
+    const alert = await this.alertCtrl.create({
+      header: 'Log Out',
+      message: 'Are you sure you want to log out',
+      buttons: [{text: 'No', role: 'cancel'}, {text: 'Yes', handler: () => {
+        this.router.navigateByUrl('/login');
+        this.modalCtrl.dismiss();
+        window.localStorage.clear();
+        this.authSrv.logOut();
+      }}]
+    });
+    return await alert.present();
   }
 }
