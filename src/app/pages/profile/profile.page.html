@@ -17,21 +17,21 @@
     </div>
     <ion-item>
       <ion-label position="floating">Email address</ion-label>
-      <ion-input [(ngModel)]="userEmail" value={{userEmail}}></ion-input>
+      <ion-input [(ngModel)]="userEmail" value={{userEmail}} (ngModelChange)="onChange()"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label position="floating">First Name</ion-label>
-      <ion-input [(ngModel)]="userName" value={{userName}}></ion-input>
+      <ion-input [(ngModel)]="userName" value={{userName}} (ngModelChange)="onChange()"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label position="floating">Last Name</ion-label>
-      <ion-input [(ngModel)]="userSurname" value={{userSurname}}></ion-input>
+      <ion-input [(ngModel)]="userSurname" value={{userSurname}} (ngModelChange)="onChange()"></ion-input>
     </ion-item>
     <ion-item (click)="onLogOut()" class="logout">
       <p>Log Out</p>
       <ion-icon name="exit-outline"></ion-icon>
     </ion-item>
-      <ion-button (click)="onSaveChanges()" class="save-button" expand="block">Save Changes</ion-button>
+      <ion-button *ngIf="hasChanges" (click)="onSaveChanges()" class="save-button" expand="block">Save Changes</ion-button>
   </ion-grid>
 
 </ion-content>

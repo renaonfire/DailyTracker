@@ -17,6 +17,7 @@ export class ProfilePage implements OnInit {
   userName;
   userSurname;
   userDetailsSub: Subscription;
+  hasChanges: boolean;
 
   constructor(private modalCtrl: ModalController,
               private actionCtrl: ActionSheetController,
@@ -35,7 +36,22 @@ export class ProfilePage implements OnInit {
   }
 
   onClose() {
-    this.modalCtrl.dismiss();
+    if (this.hasChanges) {
+      const alert = {
+        header: 'You made changes',
+        message: 'Are you sure you want to discard changes?',
+        handler: () => {
+          this.modalCtrl.dismiss();
+        }
+      };
+      this.onPresentAlert(alert.header, alert.message, alert.handler);
+    } else {
+      this.modalCtrl.dismiss();
+    }
+  }
+
+  onChange() {
+    this.hasChanges = true;
   }
 
   async onUploadImageClick() {
@@ -54,19 +70,24 @@ export class ProfilePage implements OnInit {
   }
 
   onLogOut() {
-    this.onPresentAlert();
-  }
-
-  async onPresentAlert() {
-    const alert = await this.alertCtrl.create({
+    const alert = {
       header: 'Log Out',
       message: 'Are you sure you want to log out',
-      buttons: [{text: 'No', role: 'cancel'}, {text: 'Yes', handler: () => {
+      handler: () => {
         this.router.navigateByUrl('/login');
         this.modalCtrl.dismiss();
         window.localStorage.clear();
         this.authSrv.logOut();
-      }}]
+      }
+    };
+    this.onPresentAlert(alert.header, alert.message, alert.handler);
+  }
+
+  async onPresentAlert(header: string, message: string, handler: () => void) {
+    const alert = await this.alertCtrl.create({
+      header,
+      message,
+      buttons: [{text: 'No', role: 'cancel'}, {text: 'Yes', handler }]
     });
     return await alert.present();
   }
