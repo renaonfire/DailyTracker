@@ -10,7 +10,8 @@ export class Helpers {
             const date = time ? new Date(time) : new Date();
             const hour = date.getHours();
             const minutes = date.getMinutes();
-            return `${hour}:${minutes}`;
+            const newMinutes = minutes.toLocaleString().length === 1 ? `${0}${minutes}` : minutes;
+            return `${hour}:${newMinutes}`;
           }
     
         formatDate(date?) {
