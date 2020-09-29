@@ -24,6 +24,8 @@ export class NewActivityPage implements OnInit {
   newCategory;
   existingCategoriesSub: Subscription;
   existingCategories;
+  invalidType: boolean;
+  invalidCategory: boolean;
 
   constructor(private modalCtrl: ModalController,
               private projectSrv: ProjectService,
@@ -51,7 +53,6 @@ export class NewActivityPage implements OnInit {
     });
   }
 
-  // TODO: format time to have 2 digits always
   currentTime() {
     this.startTime = this.helpers.formatTime();
   }
@@ -70,17 +71,33 @@ export class NewActivityPage implements OnInit {
     this.currentTime();
   }
 
-  onSaveActivity() {
-    const time = this.startTime ? this.startTime : new Date();
-    const cat = `${this.type} ${this.category}`;
-    if (this.selectedProject && this.selectedProject !== this.projectName) {
-      this.projectSrv.onAddActivity(this.selectedProject, this.newDayDate, time, cat);
+  validateFields() {
+    if (!this.type) {
+      this.invalidType = true;
     } else {
-      this.projectSrv.onCreateProjectWithData(this.projectName, this.newDayDate, time, cat);
-      window.localStorage.removeItem('projectName');
+      this.invalidType = false;
     }
-    window.localStorage.removeItem(`${this.selectedProject}-temp-day`);
-    this.onModalClose();
+    if (!this.category) {
+      this.invalidCategory = true;
+    } else {
+      this.invalidCategory = false;
+    }
+  }
+
+  onSaveActivity() {
+    this.validateFields();
+    if (this.type && this.category) {
+      const time = this.startTime ? this.startTime : new Date();
+      const cat = `${this.type} ${this.category}`;
+      if (this.selectedProject && this.selectedProject !== this.projectName) {
+        this.projectSrv.onAddActivity(this.selectedProject, this.newDayDate, time, cat);
+      } else {
+        this.projectSrv.onCreateProjectWithData(this.projectName, this.newDayDate, time, cat);
+        window.localStorage.removeItem('projectName');
+      }
+      window.localStorage.removeItem(`${this.selectedProject}-temp-day`);
+      this.onModalClose();
+    }
   }
 
   validateNewCategory() {

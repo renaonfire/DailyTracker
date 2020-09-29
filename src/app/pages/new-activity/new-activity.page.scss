@@ -6,3 +6,9 @@
 ion-icon[name="add-circle"] {
     padding-right: 0.3125rem;;
 }
+
+.invalid {
+    font-size: 12px;
+    padding: 0 20px;
+    color: var(--ion-color-danger);
+}
