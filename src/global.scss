@@ -47,3 +47,15 @@
     width: 1.5625rem;
     margin-left: 0.5rem;
 }
+
+.empty {
+    margin-top: 3.125rem;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    height: 80%;
+
+    ion-img {
+        width: 60%;
+    }
+}

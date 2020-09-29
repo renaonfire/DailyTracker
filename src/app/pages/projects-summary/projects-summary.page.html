@@ -27,7 +27,7 @@
     <div *ngIf="isLoading" class="spinner">
       <ion-spinner color="primary"></ion-spinner>
     </div>
-    <ion-list *ngIf="loadedProjects && !isLoading">
+    <ion-list *ngIf="!!loadedProjects.length && !isLoading">
       <ion-item-sliding *ngFor="let project of loadedProjects">
         <ion-item (click)="onClickProject(project)">
           <ion-label>{{ project }}</ion-label>
@@ -40,7 +40,7 @@
         </ion-item-options>
       </ion-item-sliding>
     </ion-list>
-    <div class="empty" *ngIf="!isLoading && !localName && !loadedProjects">
+    <div class="empty" *ngIf="!isLoading && !localName && !loadedProjects.length">
       <ion-img src="../../../assets/weed.png"></ion-img>
       <p>No projects</p>
     </div>
