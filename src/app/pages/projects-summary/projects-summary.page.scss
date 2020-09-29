@@ -1,0 +1,11 @@
+.empty {
+    margin-top: 3.125rem;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    height: 80%;
+
+    ion-img {
+        width: 60%;
+    }
+}
