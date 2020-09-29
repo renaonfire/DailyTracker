@@ -44,7 +44,7 @@
         <ion-select-option value="Finish">Finish</ion-select-option>
       </ion-select>
     </ion-item>
-    <p class="invalid type" *ngIf="invalidType">Select type</p>
+    <p class="invalid" *ngIf="invalidType">Select type</p>
   </ion-col>
   <ion-col>
     <ion-item>
@@ -54,7 +54,7 @@
           <ion-select-option *ngFor="let cat of existingCategories" value={{cat.name}}>{{cat.name}}</ion-select-option>
       </ion-select>
     </ion-item>
-    <p class="invalid category" *ngIf="invalidCategory">Select category</p>
+    <p class="invalid" *ngIf="invalidCategory">Select category</p>
   </ion-col>
 </ion-row>
 <ion-row class="custom-button">
