@@ -21,24 +21,24 @@ export class ProjectService {
 
   constructor(private helpers: Helpers) {}
 
-  onCreateProjectWithData(name: string, day: string, start: string, cat: string) {
-    const activityId = Math.floor(Math.random() * Math.floor(9999999));
-    const newDate = typeof day === 'string' ? day : this.helpers.formatDate(day);
-    const newTime = start && typeof start === 'string' ? start : this.helpers.formatTime(start);
-    const creationDate = this.helpers.formatDate();
+  onCreateProjectWithData(projectName: string, day: string, start: string, cat: string) {
+    const id = Math.floor(Math.random() * Math.floor(9999999));
+    const daysDate = typeof day === 'string' ? day : this.helpers.formatDate(day);
+    const startTime = start && typeof start === 'string' ? start : this.helpers.formatTime(start);
+    const createdDate = this.helpers.formatDate();
     const newProject: Project = {
-      projectName: name,
-      createdDate: creationDate
+      projectName,
+      createdDate
     };
     const newActivity: Activities = {
-        id: activityId,
-        daysDate: newDate,
-        startTime: newTime,
+        id,
+        daysDate,
+        startTime,
         category: cat
     };
-    this.projectRef.child(name).set(newProject);
-    this.projectRef.child(name).child('days').child(newDate).child(`${activityId}`).set(newActivity);
-    this.latestProjectRef.child(name).set(newProject);
+    this.projectRef.child(projectName).set(newProject);
+    this.projectRef.child(projectName).child('days').child(daysDate).child(`${id}`).set(newActivity);
+    this.latestProjectRef.child(projectName).set(newProject);
   }
 
   retrieveProjects() {
@@ -97,18 +97,18 @@ export class ProjectService {
     }
   }
 
-  onAddActivity(projectName, day, start, cat) {
+  onAddActivity(projectName, day, start, category) {
     if (this.projectRef) {
-      const activityId = Math.floor(Math.random() * Math.floor(9999999));
-      const newDay = typeof day === 'string' ? day : this.helpers.formatDate(day);
-      const newTime = typeof start === 'string' ? start : this.helpers.formatTime(start);
+      const id = Math.floor(Math.random() * Math.floor(9999999));
+      const daysDate = typeof day === 'string' ? day : this.helpers.formatDate(day);
+      const startTime = typeof start === 'string' ? start : this.helpers.formatTime(start);
       const newActivity: Activities = {
-        id: activityId,
-        daysDate: newDay,
-        startTime: newTime,
-        category: cat
+        id,
+        daysDate,
+        startTime,
+        category
       };
-      this.projectRef.child(projectName).child('days').child(newDay).child(`${activityId}`).set(newActivity);
+      this.projectRef.child(projectName).child('days').child(daysDate).child(`${id}`).set(newActivity);
     }
   }
 

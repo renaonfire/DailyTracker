@@ -13,13 +13,13 @@ export class CategoriesService {
 
   constructor() { }
 
-  createNewCategory(catName: string) {
-    const key = this.categoriesRef.push().key;
+  createNewCategory(name: string) {
+    const id = this.categoriesRef.push().key;
     const cat: Categories = {
-      id: key,
-      name: catName
+      id,
+      name
     };
-    this.categoriesRef.child(key).set(cat);
+    this.categoriesRef.child(id).set(cat);
   }
 
   retrieveCategories() {

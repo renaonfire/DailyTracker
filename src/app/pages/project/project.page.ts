@@ -1,8 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { ProjectService } from 'src/app/service/project.service';
 import { ViewDayPage } from '../view-day/view-day.page';
 import { NewActivityPage } from '../new-activity/new-activity.page';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-project',
@@ -14,8 +15,8 @@ export class ProjectPage implements OnInit {
   @Input() selectedProject;
 
   loadedDays;
-  loadedDataSub;
-  localName = window.localStorage.getItem('projectName');
+  loadedDataSub: Subscription;
+  localName;
   localDay;
   isLoading = true;
 
@@ -32,6 +33,7 @@ export class ProjectPage implements OnInit {
     if (this.selectedProject) {
       this.projectSrv.retrieveProjectDays(this.selectedProject);
     }
+    this.localName = window.localStorage.getItem('projectName');
     this.localDay = window.localStorage.getItem(`${this.selectedProject}-temp-day`);
   }
 
@@ -44,6 +46,7 @@ export class ProjectPage implements OnInit {
     modal.onWillDismiss().then(() => {
       this.ngOnInit();
     });
+    this.loadedDataSub.unsubscribe();
     return await modal.present();
   }
 
@@ -55,6 +58,7 @@ export class ProjectPage implements OnInit {
     modal.onWillDismiss().then(() => {
       this.ngOnInit();
     });
+    this.loadedDataSub.unsubscribe();
     return await modal.present();
   }
 
@@ -82,5 +86,7 @@ export class ProjectPage implements OnInit {
   onCloseProject() {
     this.modalCtrl.dismiss();
   }
+
+ 
 
 }

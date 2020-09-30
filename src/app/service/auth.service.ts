@@ -57,11 +57,11 @@ export class AuthService {
   }
 
   async showAlert(err) {
-    const title = err.code.replace('auth/', ' ');
-    const desc = err.message;
+    const header = err.code.replace('auth/', ' ');
+    const message = err.message;
     const alert = await this.alertCtrl.create({
-      header: title,
-      message: desc,
+      header,
+      message,
       buttons: ['OK']
     });
     alert.present();

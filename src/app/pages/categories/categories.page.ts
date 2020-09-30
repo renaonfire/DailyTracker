@@ -14,6 +14,7 @@ export class CategoriesPage implements OnInit {
   loadedCategories;
   loadedCategoriesSub: Subscription;
   newCategory;
+  isLoading = true;
 
   constructor(private catSrv: CategoriesService,
               private alertCtrl: AlertController,
@@ -23,6 +24,7 @@ export class CategoriesPage implements OnInit {
   ngOnInit() {
     this.loadedCategoriesSub = this.catSrv.categoriesChanged.subscribe(cat => {
       this.loadedCategories = cat;
+      this.isLoading = false;
     });
     this.catSrv.retrieveCategories();
   }

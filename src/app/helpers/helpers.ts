@@ -22,10 +22,10 @@ export class Helpers {
             return `${day} ${this.months[month]} ${year}`;
         }
 
-        showAlert(head: string, msg: string) {
+        showAlert(header: string, message: string) {
           this.alertCtrl.create({
-            header: head,
-            message: msg,
+            header,
+            message,
             buttons: ['OK']
           }).then(alertEl => alertEl.present());
         }

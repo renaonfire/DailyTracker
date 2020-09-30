@@ -19,6 +19,7 @@ export class NewActivityPage implements OnInit {
   startTime;
   category;
   addedDay;
+  existingDaysSub: Subscription;
   existingDays;
   type;
   newCategory;
@@ -39,6 +40,10 @@ export class NewActivityPage implements OnInit {
     this.existingCategoriesSub = this.catSrv.categoriesChanged.subscribe(cat => {
       this.existingCategories = cat;
     });
+    this.existingDaysSub = this.projectSrv.daysChanged.subscribe(days => {
+      this.existingDays = days;
+    });
+    this.projectSrv.retrieveProjectDays(this.selectedProject);
     this.catSrv.retrieveCategories();
     if (this.newDayDate) {
       this.currentTime();
@@ -67,8 +72,11 @@ export class NewActivityPage implements OnInit {
 
   onSaveDay() {
     this.newDayDate = this.addedDay;
-    window.localStorage.setItem(`${this.selectedProject}-temp-day`, this.newDayDate);
     this.currentTime();
+    const matchingDays = this.existingDays.filter(d => d === this.addedDay);
+    if (!matchingDays.length) {
+      window.localStorage.setItem(`${this.selectedProject}-temp-day`, this.newDayDate);
+    }
   }
 
   validateFields() {
