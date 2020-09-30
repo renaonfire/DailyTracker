@@ -1,5 +1,7 @@
 {
   "name": "dailyTracker",
-  "integrations": {},
+  "integrations": {
+    "capacitor": {}
+  },
   "type": "angular"
 }

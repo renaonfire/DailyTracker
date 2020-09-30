@@ -12,6 +12,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { firebaseConfig } from './firebase';
 import * as firebase from 'firebase';
 import { Helpers } from './helpers/helpers';
+import { AES256 } from '@ionic-native/aes-256/ngx';
 
 firebase.initializeApp(firebaseConfig);
 
@@ -24,6 +25,7 @@ firebase.initializeApp(firebaseConfig);
     StatusBar,
     SplashScreen,
     Helpers,
+    AES256,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

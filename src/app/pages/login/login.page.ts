@@ -13,7 +13,7 @@ export class LoginPage {
   email;
   password;
 
-  constructor(private auth: AuthService, private router: Router, private loc: Location) {
+  constructor(private auth: AuthService, private router: Router, private loc: Location ) {
     if (this.auth.isAuthenticated()) {
       console.log('isauth');
       this.loc.replaceState('/'); // clears browser history so they can't navigate with back button
@@ -22,6 +22,7 @@ export class LoginPage {
   }
 
   onLogin() {
+    this.auth.generateSecureKey(this.password);
     this.auth.signIn(this.email, this.password);
   }
 
