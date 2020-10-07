@@ -4,6 +4,7 @@ import { ActionSheetController, AlertController, ModalController } from '@ionic/
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/service/auth.service';
 import { UserService } from 'src/app/service/user.service';
+import { Plugins, CameraResultType } from '@capacitor/core';
 
 @Component({
   selector: 'app-profile',
@@ -59,7 +60,7 @@ export class ProfilePage implements OnInit {
       buttons: [{
         text: 'Upload an Image',
         icon: 'camera',
-        handler: () => {console.log('upload clicked')}
+        handler: () => { this.onUploadImage(); }
       }]
     });
     return await actionSheet.present();
@@ -91,5 +92,13 @@ export class ProfilePage implements OnInit {
       buttons: [{text: 'No', role: 'cancel'}, {text: 'Yes', handler }]
     });
     return await alert.present();
+  }
+
+  async onUploadImage() {
+    const { Camera } = Plugins;
+    const image = await Camera.getPhoto({
+      resultType: CameraResultType.Base64
+    });
+    return await image;
   }
 }
