@@ -8,7 +8,7 @@ import * as firebase from 'firebase';
 })
 export class UserService {
 
-  userId = localStorage.getItem('currentUserId') || '';
+  userId = localStorage.getItem('currentUserId');
   userRef = this.userId && firebase.database().ref(this.userId).child('userInfo');
   userDetailsChanged = new Subject<User>();
 

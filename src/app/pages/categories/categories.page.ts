@@ -46,7 +46,7 @@ export class CategoriesPage implements OnInit {
   }
 
   validateNewCategory() {
-    if (this.loadedCategories.find(cat => cat.name === this.newCategory ) || this.loadedCategories.length >= 10) {
+    if (this.loadedCategories.find(cat => cat.name === this.newCategory ) || this.loadedCategories?.length >= 10) {
       const lengthExceeded: boolean = (this.loadedCategories.lenght >= 10);
       const alert = {
         head: lengthExceeded ? 'Too many entries' : 'Category Already Exists',

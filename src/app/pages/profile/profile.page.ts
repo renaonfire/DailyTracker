@@ -67,6 +67,7 @@ export class ProfilePage implements OnInit {
 
   onSaveChanges() {
     this.userSrv.updateUserDetails(this.userEmail, this.userName, this.userSurname);
+    this.modalCtrl.dismiss();
   }
 
   onLogOut() {

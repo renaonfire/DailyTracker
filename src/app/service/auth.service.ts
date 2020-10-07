@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { AlertController } from '@ionic/angular';
+import { AlertController, Platform } from '@ionic/angular';
 import { BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
 import { UserService } from './user.service';
@@ -12,7 +12,6 @@ import { AES256 } from '@ionic-native/aes-256/ngx';
 export class AuthService {
 
   authState = new BehaviorSubject(false);
-  secureKey;
 
   constructor(private auth: AngularFireAuth,
               private alertCtrl: AlertController,
@@ -20,11 +19,9 @@ export class AuthService {
               private userSrv: UserService,
               private aes: AES256) { }
 
-  async generateSecureKey(password: string) {
-    this.secureKey = await this.aes.generateSecureKey(password);
-    console.log(this.secureKey);
-    // Returns a 32 bytes string
- }
+//   async generateSecureKey(password: string) {
+//     return this.secureKey = await this.aes.generateSecureKey(password);
+//  }
 
   async onRegister(email: string, password: string, rpassword: string) {
     if (password !== rpassword) {
@@ -69,7 +66,7 @@ export class AuthService {
   }
 
   async showAlert(err) {
-    const header = err.code.replace('auth/', ' ');
+    const header = err.code?.replace('auth/', ' ');
     const message = err.message;
     const alert = await this.alertCtrl.create({
       header,
