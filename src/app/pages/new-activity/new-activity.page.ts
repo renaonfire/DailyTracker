@@ -108,7 +108,7 @@ export class NewActivityPage implements OnInit {
     if (this.type && this.category) {
       const time = this.startTime ? this.startTime : new Date();
       const cat = `${this.type} ${this.category}`;
-      const img = !!this.images.length ? this.images : [''];
+      const img = !!this.images.length ? this.images : [];
       if (this.selectedProject && this.selectedProject !== this.projectName) {
         this.projectSrv.onAddActivity(this.selectedProject, this.newDayDate, time, cat, img);
       } else {

@@ -22,6 +22,7 @@ export class ViewDayPage implements OnInit {
     this.loadedActivitiesSub = this.projectSrv.activitiesChanged.subscribe(activities => {
       this.loadedActivities = activities;
       this.isLoading = false;
+      console.log(this.loadedActivities);
     });
     this.projectSrv.retrieveDayActivities(this.selectedProject, this.selectedDay);
   }
@@ -40,6 +41,12 @@ export class ViewDayPage implements OnInit {
       if (this.loadedActivities[i].id === activityId) {
         this.loadedActivities.splice(i, 1);
       }
+    }
+  }
+
+  onViewImages(item) {
+    if (!!item.images.length) {
+      // TODO add new modal page
     }
   }
 
