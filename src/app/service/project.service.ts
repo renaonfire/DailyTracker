@@ -21,7 +21,7 @@ export class ProjectService {
 
   constructor(private helpers: Helpers) {}
 
-  onCreateProjectWithData(projectName: string, day: string, start: string, cat: string) {
+  onCreateProjectWithData(projectName: string, day: string, start: string, cat: string, images: string[]) {
     const id = Math.floor(Math.random() * Math.floor(9999999));
     const daysDate = typeof day === 'string' ? day : this.helpers.formatDate(day);
     const startTime = start && typeof start === 'string' ? start : this.helpers.formatTime(start);
@@ -34,7 +34,8 @@ export class ProjectService {
         id,
         daysDate,
         startTime,
-        category: cat
+        category: cat,
+        images
     };
     this.projectRef.child(projectName).set(newProject);
     this.projectRef.child(projectName).child('days').child(daysDate).child(`${id}`).set(newActivity);
@@ -97,7 +98,7 @@ export class ProjectService {
     }
   }
 
-  onAddActivity(projectName, day, start, category) {
+  onAddActivity(projectName, day, start, category, images) {
     if (this.projectRef) {
       const id = Math.floor(Math.random() * Math.floor(9999999));
       const daysDate = typeof day === 'string' ? day : this.helpers.formatDate(day);
@@ -106,7 +107,8 @@ export class ProjectService {
         id,
         daysDate,
         startTime,
-        category
+        category,
+        images
       };
       this.projectRef.child(projectName).child('days').child(daysDate).child(`${id}`).set(newActivity);
     }

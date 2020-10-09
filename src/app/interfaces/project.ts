@@ -8,4 +8,5 @@ export interface Activities {
         daysDate: string;
         startTime?: string;
         category?: string;
+        images: string[];
 }
