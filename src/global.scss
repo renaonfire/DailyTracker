@@ -59,3 +59,16 @@
         width: 60%;
     }
 }
+
+.invalid {
+    font-size: 0.75rem;
+    padding: 0 1.25rem;
+    color: var(--ion-color-danger);
+}
+
+.save-button {
+    position: absolute;
+    bottom: 1rem;
+    width: 96%;
+    margin: 2%;
+}

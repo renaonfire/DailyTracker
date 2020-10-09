@@ -13,12 +13,15 @@ import { Plugins, CameraResultType } from '@capacitor/core';
 })
 export class ProfilePage implements OnInit {
 
-  userEmail = window.localStorage.getItem('currentUser');
+  userEmail;
   userImage = '../../../assets/avatar.png';
   userName;
   userSurname;
   userDetailsSub: Subscription;
   hasChanges: boolean;
+  invalidEmail: boolean;
+  invalidName: boolean;
+  invalidSurname: boolean;
 
   constructor(private modalCtrl: ModalController,
               private actionCtrl: ActionSheetController,
@@ -31,9 +34,28 @@ export class ProfilePage implements OnInit {
     this.userDetailsSub = this.userSrv.userDetailsChanged.subscribe(user => {
       this.userName = user.name;
       this.userSurname = user.surname;
-      this.userEmail = user.email;
+      this.userEmail = user.email || window.localStorage.getItem('currentUser');
+      this.userImage = user.image;
     });
     this.userSrv.retrieveUserDetails();
+  }
+
+  validateFields() {
+    if (this.userEmail) {
+      this.invalidEmail = false;
+    } else {
+      this.invalidEmail = true;
+    }
+    if (this.userName) {
+      this.invalidName = false;
+    } else {
+      this.invalidName = true;
+    }
+    if (this.userSurname) {
+      this.invalidSurname = false;
+    } else {
+      this.invalidSurname = true;
+    }
   }
 
   onClose() {
@@ -55,20 +77,12 @@ export class ProfilePage implements OnInit {
     this.hasChanges = true;
   }
 
-  async onUploadImageClick() {
-    const actionSheet = await this.actionCtrl.create({
-      buttons: [{
-        text: 'Upload an Image',
-        icon: 'camera',
-        handler: () => { this.onUploadImage(); }
-      }]
-    });
-    return await actionSheet.present();
-  }
-
   onSaveChanges() {
-    this.userSrv.updateUserDetails(this.userEmail, this.userName, this.userSurname);
-    this.modalCtrl.dismiss();
+    this.validateFields();
+    if (this.userEmail && this.userName && this.userSurname) {
+      this.userSrv.updateUserDetails(this.userEmail, this.userName, this.userSurname, this.userImage);
+      this.modalCtrl.dismiss();
+    }
   }
 
   onLogOut() {
@@ -85,6 +99,17 @@ export class ProfilePage implements OnInit {
     this.onPresentAlert(alert.header, alert.message, alert.handler);
   }
 
+  async onUploadImageClick() {
+    const actionSheet = await this.actionCtrl.create({
+      buttons: [{
+        text: 'Upload an Image',
+        icon: 'camera',
+        handler: () => { this.onUploadImage(); }
+      }]
+    });
+    return await actionSheet.present();
+  }
+
   async onPresentAlert(header: string, message: string, handler: () => void) {
     const alert = await this.alertCtrl.create({
       header,
@@ -96,9 +121,11 @@ export class ProfilePage implements OnInit {
 
   async onUploadImage() {
     const { Camera } = Plugins;
-    const image = await Camera.getPhoto({
-      resultType: CameraResultType.Base64
+    await Camera.getPhoto({
+      resultType: CameraResultType.DataUrl
+    }).then((img) => {
+      this.userImage = img.dataUrl;
+      this.hasChanges = true;
     });
-    return await image;
   }
 }

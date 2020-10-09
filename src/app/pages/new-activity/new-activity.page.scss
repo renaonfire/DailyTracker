@@ -7,8 +7,10 @@ ion-icon[name="add-circle"] {
     padding-right: 0.3125rem;;
 }
 
-.invalid {
-    font-size: 0.75rem;
-    padding: 0 1.25rem;
-    color: var(--ion-color-danger);
+.new-image {
+    padding: 1.25rem;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 25%;
+    color: var(--ion-color-secondary);
 }
+

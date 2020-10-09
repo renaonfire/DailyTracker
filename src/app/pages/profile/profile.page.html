@@ -19,19 +19,22 @@
       <ion-label position="floating">Email address</ion-label>
       <ion-input [(ngModel)]="userEmail" value={{userEmail}} (ngModelChange)="onChange()"></ion-input>
     </ion-item>
+    <p class="invalid" *ngIf="invalidEmail">Enter email</p>
     <ion-item>
       <ion-label position="floating">First Name</ion-label>
       <ion-input [(ngModel)]="userName" value={{userName}} (ngModelChange)="onChange()"></ion-input>
     </ion-item>
+    <p class="invalid" *ngIf="invalidName">Enter name</p>
     <ion-item>
       <ion-label position="floating">Last Name</ion-label>
       <ion-input [(ngModel)]="userSurname" value={{userSurname}} (ngModelChange)="onChange()"></ion-input>
     </ion-item>
+    <p class="invalid" *ngIf="invalidSurname">Enter surname</p>
     <ion-item (click)="onLogOut()" class="logout">
       <p>Log Out</p>
       <ion-icon name="exit-outline"></ion-icon>
     </ion-item>
-      <ion-button *ngIf="hasChanges" (click)="onSaveChanges()" class="save-button" expand="block">Save Changes</ion-button>
   </ion-grid>
+  <ion-button *ngIf="hasChanges" (click)="onSaveChanges()" class="save-button" expand="block">Save Changes</ion-button>
 
 </ion-content>

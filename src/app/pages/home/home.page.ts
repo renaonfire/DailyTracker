@@ -23,6 +23,7 @@ export class HomePage implements OnInit {
   selectedProject;
   incompleteProject;
   userImage = '../../../assets/avatar.png';
+  userDetailsSub: Subscription;
   isLoading = true;
 
   constructor(private modalCtrl: ModalController,
@@ -44,6 +45,9 @@ export class HomePage implements OnInit {
       this.isLoading = false;
     });
     this.projectSrv.retrieveLatestProject();
+    this.userDetailsSub = this.userSrv.userDetailsChanged.subscribe(user => {
+      this.userImage = user.image;
+    });
     this.userSrv.retrieveUserDetails();
   }
 

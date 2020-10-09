@@ -23,12 +23,13 @@ export class UserService {
     }
   }
 
-  updateUserDetails(email?: string, name?: string, surname?: string) {
+  updateUserDetails(email?: string, name?: string, surname?: string, image?: string) {
     if (this.userRef) {
       const user: User = {
         email,
         name,
-        surname
+        surname,
+        image
       };
       this.userRef.set(user);
     }

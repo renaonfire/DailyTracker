@@ -4,6 +4,7 @@ import { ProjectService } from 'src/app/service/project.service';
 import { Helpers } from 'src/app/helpers/helpers';
 import { CategoriesService } from 'src/app/service/categories.service';
 import { Subscription } from 'rxjs';
+import { CameraResultType, Plugins } from '@capacitor/core';
 
 @Component({
   selector: 'app-new-activity',
@@ -27,6 +28,7 @@ export class NewActivityPage implements OnInit {
   existingCategories;
   invalidType: boolean;
   invalidCategory: boolean;
+  images = [];
 
   constructor(private modalCtrl: ModalController,
               private projectSrv: ProjectService,
@@ -77,6 +79,15 @@ export class NewActivityPage implements OnInit {
     if (!matchingDays.length) {
       window.localStorage.setItem(`${this.selectedProject}-temp-day`, this.newDayDate);
     }
+  }
+
+  async onNewImage() {
+    const { Camera } = Plugins;
+    await Camera.getPhoto({
+      resultType: CameraResultType.DataUrl
+    }).then((img) => {
+      this.images.push(img.dataUrl);
+    });
   }
 
   validateFields() {
