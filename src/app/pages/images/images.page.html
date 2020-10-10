@@ -12,7 +12,7 @@
 <ion-content>
   <div class="images-grid">
     <div *ngFor="let img of passedImages">
-      <img [src]="img">
+      <img (click)="onViewPhoto(img)" [src]="img">
     </div>
   </div>
 
