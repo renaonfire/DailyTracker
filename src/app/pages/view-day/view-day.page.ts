@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { ProjectService } from 'src/app/service/project.service';
 import { ModalController } from '@ionic/angular';
 import { NewActivityPage } from '../new-activity/new-activity.page';
+import { ImagesPage } from '../images/images.page';
 
 @Component({
   selector: 'app-view-day',
@@ -22,7 +23,6 @@ export class ViewDayPage implements OnInit {
     this.loadedActivitiesSub = this.projectSrv.activitiesChanged.subscribe(activities => {
       this.loadedActivities = activities;
       this.isLoading = false;
-      console.log(this.loadedActivities);
     });
     this.projectSrv.retrieveDayActivities(this.selectedProject, this.selectedDay);
   }
@@ -44,9 +44,13 @@ export class ViewDayPage implements OnInit {
     }
   }
 
-  onViewImages(item) {
+  async onViewImages(item) {
     if (!!item.images.length) {
-      // TODO add new modal page
+      const modal = await this.modalCtrl.create({
+        component: ImagesPage,
+        componentProps: {passedImages: item.images, activityName: item.category}
+      });
+      return await modal.present();
     }
   }
 

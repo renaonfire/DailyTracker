@@ -68,10 +68,8 @@
   </ion-col>
 </ion-row>
 <ion-row>
-  <div class="image-container" size-md='6'>
-    <ion-item lines="none">
-      <ion-icon (click)="onNewImage()" class="new-image" name="camera"></ion-icon>
-    </ion-item>
+  <div class="image-container">
+    <ion-icon (click)="onNewImage()" class="new-image" name="camera"></ion-icon>
     <div *ngFor="let img of images">
       <img class="added-image" src={{img}}>
     </div>

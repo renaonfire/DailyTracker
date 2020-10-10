@@ -40,6 +40,10 @@ const routes: Routes = [
         loadChildren: () => import('./pages/profile/profile.module').then( m => m.ProfilePageModule)
       }
     ]
+  },
+  {
+    path: 'images',
+    loadChildren: () => import('./pages/images/images.module').then( m => m.ImagesPageModule)
   }
 ];
 

@@ -1,0 +1,15 @@
+.images-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 45%);
+    column-gap: 5%;
+    row-gap: 5%;
+    margin: 1.25rem;
+    justify-content: center;
+}
+
+img {
+    height: 10rem;
+    width: 10rem;
+    border-radius: 25%;
+    object-fit: cover;
+}

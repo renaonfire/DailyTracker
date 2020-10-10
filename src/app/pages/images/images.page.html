@@ -1,0 +1,19 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="onClosePage()">
+        <ion-icon color="primary " name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{activityName || 'Activity'}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="images-grid">
+    <div *ngFor="let img of passedImages">
+      <img [src]="img">
+    </div>
+  </div>
+
+</ion-content>

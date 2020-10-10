@@ -56,7 +56,7 @@ export class HomePage implements OnInit {
   }
 
   onAvatarClick() {
-    this.onPresentModal(ProfilePage);
+    this.onPresentModal(ProfilePage, true);
   }
 
   async onNewProjectAlert() {
