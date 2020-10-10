@@ -28,6 +28,7 @@ export class NewActivityPage implements OnInit {
   existingCategories;
   invalidType: boolean;
   invalidCategory: boolean;
+  hasChangesOnActivity: boolean;
   images = [];
 
   constructor(private modalCtrl: ModalController,
@@ -55,9 +56,19 @@ export class NewActivityPage implements OnInit {
   }
 
   onModalClose() {
-    this.modalCtrl.dismiss({
-      animated: false
-    });
+    if (this.hasChangesOnActivity) {
+      this.alertCtrl.create({
+        header: 'Images added',
+        message: 'Your changes will be discarded',
+        buttons: [
+          {text: 'Cancel', role: 'cancel'},
+          { text: 'Ok',
+            handler: () =>  this.modalCtrl.dismiss({
+              animated: false
+            })}
+          ]
+      });
+    }
   }
 
   currentTime() {
@@ -87,6 +98,7 @@ export class NewActivityPage implements OnInit {
       resultType: CameraResultType.DataUrl
     }).then((img) => {
       this.images.push(img.dataUrl);
+      this.hasChangesOnActivity = true;
     });
   }
 
@@ -116,6 +128,7 @@ export class NewActivityPage implements OnInit {
         window.localStorage.removeItem('projectName');
       }
       window.localStorage.removeItem(`${this.selectedProject}-temp-day`);
+      this.hasChangesOnActivity = false;
       this.onModalClose();
     }
   }
