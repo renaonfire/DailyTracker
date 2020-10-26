@@ -15,10 +15,12 @@ export class NewActivityPage implements OnInit {
 
   @Input() selectedProject;
   @Input() selectedDay;
+  @Input() startTime;
+  @Input() category;
+  @Input() images = [];
+  @Input() activityId;
   projectName;
   newDayDate;
-  startTime;
-  category;
   addedDay;
   existingDaysSub: Subscription;
   existingDays;
@@ -29,7 +31,6 @@ export class NewActivityPage implements OnInit {
   invalidType: boolean;
   invalidCategory: boolean;
   hasChangesOnActivity: boolean;
-  images = [];
 
   constructor(private modalCtrl: ModalController,
               private projectSrv: ProjectService,
@@ -48,11 +49,12 @@ export class NewActivityPage implements OnInit {
     });
     this.projectSrv.retrieveProjectDays(this.selectedProject);
     this.catSrv.retrieveCategories();
-    if (this.newDayDate) {
+    if (this.newDayDate && !this.startTime) {
       this.currentTime();
     } else {
       this.currentDate();
     }
+    console.log(this.category);
   }
 
   onModalClose() {
@@ -68,6 +70,9 @@ export class NewActivityPage implements OnInit {
             })}
           ]
       });
+    }
+    else {
+      this.modalCtrl.dismiss();
     }
   }
 
@@ -102,6 +107,11 @@ export class NewActivityPage implements OnInit {
     });
   }
 
+  onDeleteImage(index: number) {
+    this.images.splice(index, index + 1);
+    this.hasChangesOnActivity = true;
+  }
+
   validateFields() {
     if (!this.type) {
       this.invalidType = true;
@@ -119,12 +129,11 @@ export class NewActivityPage implements OnInit {
     this.validateFields();
     if (this.type && this.category) {
       const time = this.startTime ? this.startTime : new Date();
-      const cat = `${this.type} ${this.category}`;
       const img = !!this.images.length ? this.images : [];
       if (this.selectedProject && this.selectedProject !== this.projectName) {
-        this.projectSrv.onAddActivity(this.selectedProject, this.newDayDate, time, cat, img);
+        this.projectSrv.onAddActivity(this.selectedProject, this.newDayDate, time, this.type, this.category, img, this.activityId);
       } else {
-        this.projectSrv.onCreateProjectWithData(this.projectName, this.newDayDate, time, cat, img);
+        this.projectSrv.onCreateProjectWithData(this.projectName, this.newDayDate, time, this.type, this.category, img);
         window.localStorage.removeItem('projectName');
       }
       window.localStorage.removeItem(`${this.selectedProject}-temp-day`);

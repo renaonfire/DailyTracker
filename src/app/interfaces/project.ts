@@ -4,9 +4,10 @@ export interface Project {
 }
 
 export interface Activities {
-        id: number,
+        id: number;
         daysDate: string;
         startTime?: string;
+        type?: string;
         category?: string;
         images: string[];
 }

@@ -68,10 +68,11 @@
   </ion-col>
 </ion-row>
 <ion-row>
-  <div class="image-container">
+  <div class="images-container">
     <ion-icon (click)="onNewImage()" class="new-image" name="camera"></ion-icon>
-    <div *ngFor="let img of images">
+    <div class="image-container" *ngFor="let img of images; let i = index">
       <img class="added-image" src={{img}}>
+      <div class="icon"><ion-icon (click)="onDeleteImage(i)" color="primary" name="close-circle"></ion-icon></div>
     </div>
   </div>
 </ion-row>

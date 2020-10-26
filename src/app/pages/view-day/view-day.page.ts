@@ -3,6 +3,7 @@ import { ProjectService } from 'src/app/service/project.service';
 import { ModalController } from '@ionic/angular';
 import { NewActivityPage } from '../new-activity/new-activity.page';
 import { ImagesPage } from '../images/images.page';
+import { Activities } from 'src/app/interfaces/project';
 
 @Component({
   selector: 'app-view-day',
@@ -13,7 +14,7 @@ export class ViewDayPage implements OnInit {
 
   @Input() selectedProject;
   @Input() selectedDay;
-  loadedActivities;
+  loadedActivities: Activities[];
   loadedActivitiesSub;
   isLoading = true;
 
@@ -37,15 +38,20 @@ export class ViewDayPage implements OnInit {
 
   onDeleteActivity(activityId) {
     this.projectSrv.deleteActivity(this.selectedProject, this.selectedDay, activityId);
-    for (let i = 0; i < this.loadedActivities.length; i++) {
+    for (let i = 0; i < this.loadedActivities?.length; i++) {
       if (this.loadedActivities[i].id === activityId) {
         this.loadedActivities.splice(i, 1);
       }
     }
   }
 
+  onEditActivity(activity: Activities) {
+    console.log('on edit', activity.id)
+    return this.onPresentModal(activity.startTime, activity.type, activity.category, activity.images, activity.id);
+  }
+
   async onViewImages(item) {
-    if (!!item.images.length) {
+    if (!!item.images?.length) {
       const modal = await this.modalCtrl.create({
         component: ImagesPage,
         componentProps: {passedImages: item.images, activityName: item.category}
@@ -54,10 +60,18 @@ export class ViewDayPage implements OnInit {
     }
   }
 
-  async onPresentModal() {
+  async onPresentModal(startTime?, type?, category?, images?, activityId?) {
     const modal = await this.modalCtrl.create({
       component: NewActivityPage,
-      componentProps: {selectedProject: this.selectedProject, selectedDay: this.selectedDay},
+      componentProps:
+        {selectedProject: this.selectedProject,
+        selectedDay: this.selectedDay,
+        startTime,
+        type,
+        category,
+        images,
+        activityId
+      },
       presentingElement: await this.modalCtrl.getTop()
     });
     modal.onWillDismiss().then(() => {

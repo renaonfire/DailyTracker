@@ -12,7 +12,7 @@ export class ProjectService {
   projectChanged = new Subject<Project[]>();
   latestProjectChanged = new Subject<string>();
   daysChanged = new Subject<{}>();
-  activitiesChanged = new Subject<{}>();
+  activitiesChanged = new Subject<Activities[]>();
   userId = localStorage.getItem('currentUserId') || '';
   recentItems = JSON.parse(localStorage.getItem('recentItems'));
   projectRef = this.userId && firebase.database().ref(this.userId).child('project');
@@ -21,7 +21,7 @@ export class ProjectService {
 
   constructor(private helpers: Helpers) {}
 
-  onCreateProjectWithData(projectName: string, day: string, start: string, cat: string, images: string[]) {
+  onCreateProjectWithData(projectName: string, day: string, start: string, type: string, category: string, images: string[]) {
     const id = Math.floor(Math.random() * Math.floor(9999999));
     const daysDate = typeof day === 'string' ? day : this.helpers.formatDate(day);
     const startTime = start && typeof start === 'string' ? start : this.helpers.formatTime(start);
@@ -34,7 +34,8 @@ export class ProjectService {
         id,
         daysDate,
         startTime,
-        category: cat,
+        type,
+        category,
         images
     };
     this.projectRef.child(projectName).set(newProject);
@@ -87,7 +88,7 @@ export class ProjectService {
 
   retrieveDayActivities(projectName, day) {
     if (this.projectRef) {
-      const activities = [];
+      const activities: Activities[] = [];
       this.projectRef.child(projectName).child('days').child(day).once('value', (snapshot) => {
         snapshot.forEach((childSnapshot) => {
           activities.push(childSnapshot.val());
@@ -98,15 +99,16 @@ export class ProjectService {
     }
   }
 
-  onAddActivity(projectName, day, start, category, images) {
+  onAddActivity(projectName, day, start, type, category, images, existingId) {
     if (this.projectRef) {
-      const id = Math.floor(Math.random() * Math.floor(9999999));
+      const id = existingId ? existingId : Math.floor(Math.random() * Math.floor(9999999));
       const daysDate = typeof day === 'string' ? day : this.helpers.formatDate(day);
       const startTime = typeof start === 'string' ? start : this.helpers.formatTime(start);
       const newActivity: Activities = {
         id,
         daysDate,
         startTime,
+        type,
         category,
         images
       };

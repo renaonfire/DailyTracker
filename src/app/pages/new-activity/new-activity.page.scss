@@ -7,7 +7,7 @@ ion-icon[name="add-circle"] {
     padding-right: 0.3125rem;;
 }
 
-.image-container {
+.images-container {
     display: grid;
     grid-template-columns: repeat(4, 22%);
     column-gap: 0.75rem;
@@ -30,5 +30,15 @@ ion-icon[name="add-circle"] {
     display: flex;
     border-radius: 25%;
     object-fit: cover;
+}
+
+.image-container {
+    display: flex;
+
+    .icon {
+        right: 13px;
+        position: relative;
+        bottom: 2px;
+    }
 }
 
