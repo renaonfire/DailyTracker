@@ -21,6 +21,14 @@
         </ion-col>
       </ion-row>
     </div>
+    <div *ngIf="activityId">
+      <ion-item lines="none">
+        <ion-label class="title">Date</ion-label>
+      </ion-item>
+      <ion-datetime (ionChange)="onDateChanged($event)" [(ngModel)]="newDayDate" displayFormat="D MMMM YYYY">
+        <ion-label>Select Date</ion-label>
+      </ion-datetime>
+    </div>
     <div *ngIf="newDayDate">
     <ion-item lines="none">
       <ion-label class="title">Activity</ion-label>

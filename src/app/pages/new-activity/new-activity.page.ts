@@ -86,6 +86,10 @@ export class NewActivityPage implements OnInit {
 
   onDateChanged(event) {
     this.addedDay = this.helpers.formatDate(event.target.value);
+    if (this.activityId) {
+      this.hasChangesOnActivity = true;
+      this.newDayDate = this.addedDay;
+    }
   }
 
   onSaveDay() {
