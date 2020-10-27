@@ -77,6 +77,6 @@ ion-item {
     padding-right: 1.25rem;
 }
 
-ion-label {
+ion-label:not(.tab) {
     margin: 0.625rem 0.5rem;
 }
