@@ -31,6 +31,7 @@ export class NewActivityPage implements OnInit {
   invalidType: boolean;
   invalidCategory: boolean;
   hasChangesOnActivity: boolean;
+  hasDateChanges: boolean;
 
   constructor(private modalCtrl: ModalController,
               private projectSrv: ProjectService,
@@ -88,7 +89,7 @@ export class NewActivityPage implements OnInit {
     this.addedDay = this.helpers.formatDate(event.target.value);
     if (this.activityId) {
       this.hasChangesOnActivity = true;
-      this.newDayDate = this.addedDay;
+      this.hasDateChanges = true;
     }
   }
 
@@ -135,6 +136,11 @@ export class NewActivityPage implements OnInit {
       const time = this.startTime ? this.startTime : new Date();
       const img = !!this.images.length ? this.images : [];
       if (this.selectedProject && this.selectedProject !== this.projectName) {
+        if (this.hasDateChanges && this.selectedDay !== this.addedDay) {
+          this.projectSrv.deleteActivity(this.selectedProject, this.selectedDay, this.activityId);
+          this.newDayDate = this.addedDay;
+          this.hasDateChanges = false;
+        }
         this.projectSrv.onAddActivity(this.selectedProject, this.newDayDate, time, this.type, this.category, img, this.activityId);
       } else {
         this.projectSrv.onCreateProjectWithData(this.projectName, this.newDayDate, time, this.type, this.category, img);

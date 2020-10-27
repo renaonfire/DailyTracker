@@ -11,8 +11,8 @@
 
 <ion-content>
   <div class="images-grid">
-    <div *ngFor="let img of passedImages">
-      <img (click)="onViewPhoto(img)" [src]="img">
+    <div *ngFor="let img of passedImages, let i = index">
+      <img (click)="onViewPhoto(i)" [src]="img">
     </div>
   </div>
 

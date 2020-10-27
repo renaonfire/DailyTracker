@@ -46,7 +46,6 @@ export class ViewDayPage implements OnInit {
   }
 
   onEditActivity(activity: Activities) {
-    console.log('on edit', activity.id)
     return this.onPresentModal(activity.startTime, activity.type, activity.category, activity.images, activity.id);
   }
 
