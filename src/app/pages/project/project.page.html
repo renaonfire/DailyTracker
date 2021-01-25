@@ -16,7 +16,7 @@
   <ion-item lines="none">
     <ion-label class="title">Days</ion-label>
   </ion-item>
-  <ion-list *ngIf="localDay">
+  <ion-list *ngIf="localDay && !isLoading">
     <ion-item-sliding>
       <ion-item (click)="onViewDay(localDay)">
         <ion-label>{{ localDay }}</ion-label>
@@ -44,7 +44,7 @@
       </ion-item-options>
     </ion-item-sliding>
   </ion-list>
-  <div class="empty" *ngIf="!isLoading && !localDay && !loadedDays?.length">
+  <div class="empty" *ngIf="!isLoading && !localDay && !!!loadedDays?.length">
     <ion-img src="../../../assets/weed.png"></ion-img>
     <p>No days added</p>
   </div>

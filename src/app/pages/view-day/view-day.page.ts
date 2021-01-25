@@ -59,7 +59,7 @@ export class ViewDayPage implements OnInit {
     }
   }
 
-  async onPresentModal(startTime?, type?, category?, images?, activityId?) {
+  async onPresentModal(startTime?, type?, retrievedCategory?, images?, activityId?) {
     const modal = await this.modalCtrl.create({
       component: NewActivityPage,
       componentProps:
@@ -67,7 +67,7 @@ export class ViewDayPage implements OnInit {
         selectedDay: this.selectedDay,
         startTime,
         type,
-        category,
+        retrievedCategory,
         images,
         activityId
       },

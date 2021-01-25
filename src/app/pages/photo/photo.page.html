@@ -10,7 +10,7 @@
 </ion-header>
 
 <ion-content>
-  <ion-slides pager="true" [options]="slideOpts">
+  <ion-slides #slides pager="true" [options]="slideOpts">
     <ion-slide *ngFor="let photo of photos">
       <img [src]="photo">
     </ion-slide>

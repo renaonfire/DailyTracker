@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { ModalController, AlertController } from '@ionic/angular';
 import { ProjectService } from 'src/app/service/project.service';
 import { Helpers } from 'src/app/helpers/helpers';
@@ -16,15 +16,16 @@ export class NewActivityPage implements OnInit {
   @Input() selectedProject;
   @Input() selectedDay;
   @Input() startTime;
-  @Input() category;
   @Input() images = [];
   @Input() activityId;
+  @Input() retrievedCategory: string;
   projectName;
   newDayDate;
   addedDay;
   existingDaysSub: Subscription;
   existingDays;
   type;
+  category;
   newCategory;
   existingCategoriesSub: Subscription;
   existingCategories;
@@ -44,6 +45,13 @@ export class NewActivityPage implements OnInit {
     this.newDayDate = this.selectedDay ? this.selectedDay : window.localStorage.getItem(`${this.selectedProject}-temp-day`);
     this.existingCategoriesSub = this.catSrv.categoriesChanged.subscribe(cat => {
       this.existingCategories = cat;
+      if (this.activityId && this.retrievedCategory) {
+        const stringArray = this.retrievedCategory.split(' ');
+        if (stringArray.length > 1) {
+          this.type = stringArray[0];
+          this.category = this.existingCategories?.filter(cat => cat.name === stringArray[1])[0]?.name;
+        }
+      }
     });
     this.existingDaysSub = this.projectSrv.daysChanged.subscribe(days => {
       this.existingDays = days;
@@ -55,7 +63,6 @@ export class NewActivityPage implements OnInit {
     } else {
       this.currentDate();
     }
-    console.log(this.category);
   }
 
   onModalClose() {

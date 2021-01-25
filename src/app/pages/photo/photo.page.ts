@@ -1,5 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { IonSlides, ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'app-photo',
@@ -10,16 +10,18 @@ export class PhotoPage implements OnInit {
 
   @Input() photos;
   @Input() selectedPhotoIndex;
-  slideOpts = {
-    initialSlide: 0
-  };
+  slideOpts: any;
+
+  @ViewChild('slides', {static: true}) slides: IonSlides;
 
   constructor(private modalCtrl: ModalController) { }
 
   ngOnInit() {
-    if (this.selectedPhotoIndex) {
-      this.slideOpts.initialSlide = this.selectedPhotoIndex;
-      console.log(this.slideOpts.initialSlide);
+    if (typeof this.selectedPhotoIndex === 'number') {
+      this.slideOpts = {
+        initialSlide: this.selectedPhotoIndex
+      }
+      this.slides.update();
     }
   }
 
