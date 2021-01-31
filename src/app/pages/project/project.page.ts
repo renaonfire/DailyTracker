@@ -18,7 +18,7 @@ export class ProjectPage implements OnInit {
   loadedDataSub: Subscription;
   localName;
   localDay;
-  isLoading = true;
+  isLoading;
 
 
   constructor(private modalCtrl: ModalController,
@@ -26,12 +26,14 @@ export class ProjectPage implements OnInit {
               ) { }
 
   getData() {
+    this.isLoading = true;
     this.loadedDataSub = this.projectSrv.daysChanged.subscribe(days => {
       this.loadedDays = days;
-      this.isLoading = false;
     });
     if (this.selectedProject) {
+      // TODO need to subscibe to this and addt o view will enter. 
       this.projectSrv.retrieveProjectDays(this.selectedProject);
+      this.isLoading = false;
     }
     this.localName = window.localStorage.getItem('projectName');
     this.localDay = window.localStorage.getItem(`${this.selectedProject}-temp-day`);
@@ -40,6 +42,10 @@ export class ProjectPage implements OnInit {
   ngOnInit() {
     this.getData();
   }
+
+  // ionViewWillEnter() {
+  //  console.log('view will eneter')
+  // }
 
   async onAddActivity() {
     const modal = await this.modalCtrl.create({

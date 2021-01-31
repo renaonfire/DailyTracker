@@ -19,12 +19,12 @@ export class NewActivityPage implements OnInit {
   @Input() images = [];
   @Input() activityId;
   @Input() retrievedCategory: string;
+  @Input() type: string;
   projectName;
   newDayDate;
   addedDay;
   existingDaysSub: Subscription;
   existingDays;
-  type;
   category;
   newCategory;
   existingCategoriesSub: Subscription;
@@ -46,11 +46,7 @@ export class NewActivityPage implements OnInit {
     this.existingCategoriesSub = this.catSrv.categoriesChanged.subscribe(cat => {
       this.existingCategories = cat;
       if (this.activityId && this.retrievedCategory) {
-        const stringArray = this.retrievedCategory.split(' ');
-        if (stringArray.length > 1) {
-          this.type = stringArray[0];
-          this.category = this.existingCategories?.filter(cat => cat.name === stringArray[1])[0]?.name;
-        }
+        this.category = this.existingCategories?.filter(cat => cat.name === this.retrievedCategory)[0]?.name;
       }
     });
     this.existingDaysSub = this.projectSrv.daysChanged.subscribe(days => {
@@ -68,7 +64,7 @@ export class NewActivityPage implements OnInit {
   onModalClose() {
     if (this.hasChangesOnActivity) {
       this.alertCtrl.create({
-        header: 'Images added',
+        header: 'Changes not saved',
         message: 'Your changes will be discarded',
         buttons: [
           {text: 'Cancel', role: 'cancel'},
@@ -77,7 +73,7 @@ export class NewActivityPage implements OnInit {
               animated: false
             })}
           ]
-      });
+      }).then(alertEl => alertEl.present());
     }
     else {
       this.modalCtrl.dismiss();
@@ -93,10 +89,12 @@ export class NewActivityPage implements OnInit {
   }
 
   onDateChanged(event) {
-    this.addedDay = this.helpers.formatDate(event.target.value);
-    if (this.activityId) {
-      this.hasChangesOnActivity = true;
-      this.hasDateChanges = true;
+    if (event.target.value !== this.addedDay) {
+      this.addedDay = this.helpers.formatDate(event.target.value);
+      if (this.activityId) {
+        this.hasChangesOnActivity = true;
+        this.hasDateChanges = true;
+      }
     }
   }
 
