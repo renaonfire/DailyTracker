@@ -26,7 +26,7 @@ export class ProjectsPage implements OnInit {
     private helpers: Helpers
   ) { }
 
-  ngOnInit() {
+  getData() {
     this.loadedProjectsSub = this.projectSrv.projectChanged.subscribe(project => {
       this.loadedProjects = project;
       this.isLoading = false;
@@ -35,8 +35,12 @@ export class ProjectsPage implements OnInit {
     this.localName = window.localStorage.getItem('projectName');
   }
 
+  ngOnInit() {
+    this.getData();
+  }
+
   ionViewWillEnter() {
-    this.ngOnInit();
+    this.getData();
   }
 
   async onNewProjectAlert() {
@@ -93,7 +97,7 @@ export class ProjectsPage implements OnInit {
       componentProps: {selectedProject: this.selectedProject}
     });
     modal.onWillDismiss().then(() => {
-      this.ngOnInit();
+      this.getData();
     });
     return await modal.present();
   }

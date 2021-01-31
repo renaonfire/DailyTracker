@@ -25,7 +25,7 @@ export class ProjectPage implements OnInit {
               private projectSrv: ProjectService
               ) { }
 
-  ngOnInit() {
+  getData() {
     this.loadedDataSub = this.projectSrv.daysChanged.subscribe(days => {
       this.loadedDays = days;
       this.isLoading = false;
@@ -37,6 +37,10 @@ export class ProjectPage implements OnInit {
     this.localDay = window.localStorage.getItem(`${this.selectedProject}-temp-day`);
   }
 
+  ngOnInit() {
+    this.getData();
+  }
+
   async onAddActivity() {
     const modal = await this.modalCtrl.create({
       component: NewActivityPage,
@@ -44,7 +48,7 @@ export class ProjectPage implements OnInit {
       presentingElement: await this.modalCtrl.getTop()
     });
     modal.onWillDismiss().then(() => {
-      this.ngOnInit();
+      this.getData();
     });
     this.loadedDataSub.unsubscribe();
     return await modal.present();
@@ -56,7 +60,7 @@ export class ProjectPage implements OnInit {
       componentProps: {selectedDay: day, selectedProject: this.selectedProject}
     });
     modal.onWillDismiss().then(() => {
-      this.ngOnInit();
+      this.getData();
     });
     this.loadedDataSub.unsubscribe();
     return await modal.present();

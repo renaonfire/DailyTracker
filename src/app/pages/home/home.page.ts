@@ -32,7 +32,7 @@ export class HomePage implements OnInit {
               private helpers: Helpers,
               private userSrv: UserService) {}
 
-  ngOnInit() {
+  getData() {
     this.recentItems = JSON.parse(window.localStorage.getItem('recentItems'));
     this.incompleteProject = window.localStorage.getItem('projectName');
     // TODO refactor to not have to retrieve all projects to check name
@@ -51,8 +51,12 @@ export class HomePage implements OnInit {
     this.userSrv.retrieveUserDetails();
   }
 
+  ngOnInit() {
+    this.getData()
+  }
+
   ionViewWillEnter() {
-    this.ngOnInit();
+    this.getData();
   }
 
   onAvatarClick() {
@@ -91,7 +95,7 @@ export class HomePage implements OnInit {
     });
     if (update) {
       modal.onWillDismiss().then(() => {
-        this.ngOnInit();
+        this.getData();
       });
     }
     return await modal.present();

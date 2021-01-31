@@ -20,12 +20,16 @@ export class ViewDayPage implements OnInit {
 
   constructor(private projectSrv: ProjectService, private modalCtrl: ModalController) { }
 
-  ngOnInit() {
+  getData() {
     this.loadedActivitiesSub = this.projectSrv.activitiesChanged.subscribe(activities => {
       this.loadedActivities = activities;
-      this.isLoading = false;
     });
     this.projectSrv.retrieveDayActivities(this.selectedProject, this.selectedDay);
+  }
+
+  ngOnInit() {
+    this.getData();
+    this.isLoading = false;
   }
 
   onCloseDay() {
@@ -74,7 +78,7 @@ export class ViewDayPage implements OnInit {
       presentingElement: await this.modalCtrl.getTop()
     });
     modal.onWillDismiss().then(() => {
-      this.ngOnInit();
+      this.getData();
     });
     return await modal.present();
   }
