@@ -83,4 +83,10 @@ export class ViewDayPage implements OnInit {
     return await modal.present();
   }
 
+  ngOnDestroy() {
+    if (this.loadedActivitiesSub) {
+      this.loadedActivitiesSub.unsubscribe();
+    }
+  }
+
 }

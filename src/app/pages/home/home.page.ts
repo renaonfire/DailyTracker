@@ -110,4 +110,16 @@ export class HomePage implements OnInit {
     return await modal.present();
   }
 
+  ngOnDestroy() {
+    if (this.loadedProjectsSub) {
+      this.loadedProjectsSub.unsubscribe();
+    }
+    if (this.latestProjectSub) {
+      this.latestProjectSub.unsubscribe();
+    }
+    if (this.userDetailsSub) {
+      this.userDetailsSub.unsubscribe();
+    }
+  }
+
 }

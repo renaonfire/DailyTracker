@@ -71,5 +71,10 @@ export class CategoriesPage implements OnInit {
     this.modalCtrl.dismiss();
   }
 
+  ngOnDestroy() {
+    if (this.loadedCategoriesSub) {
+      this.loadedCategoriesSub.unsubscribe()
+    }
+  }
 
 }

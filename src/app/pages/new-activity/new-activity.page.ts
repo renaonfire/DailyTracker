@@ -141,7 +141,7 @@ export class NewActivityPage implements OnInit {
     this.validateFields();
     if (this.type && this.category) {
       const time = this.startTime ? this.startTime : new Date();
-      const img = !!this.images.length ? this.images : [];
+      const img = !!this.images?.length ? this.images : [];
       if (this.selectedProject && this.selectedProject !== this.projectName) {
         if (this.hasDateChanges && this.selectedDay !== this.addedDay) {
           this.projectSrv.deleteActivity(this.selectedProject, this.selectedDay, this.activityId);
@@ -184,5 +184,14 @@ export class NewActivityPage implements OnInit {
       }}]
     });
     return await alert.present();
+  }
+
+  ngOnDestroy() {
+    if (this.existingCategoriesSub) {
+      this.existingCategoriesSub.unsubscribe();
+    }
+    if (this.existingDaysSub) {
+      this.existingDaysSub.unsubscribe();
+    }
   }
 }

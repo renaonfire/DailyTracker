@@ -91,6 +91,10 @@ export class ProjectPage implements OnInit {
     this.modalCtrl.dismiss();
   }
 
- 
+  ngOnDestroy() {
+    if (this.loadedDataSub) {
+      this.loadedDataSub.unsubscribe();
+    }
+  }
 
 }

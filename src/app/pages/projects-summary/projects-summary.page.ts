@@ -101,4 +101,10 @@ export class ProjectsPage implements OnInit {
     });
     return await modal.present();
   }
+
+  ngOnDestroy() {
+    if (this.loadedProjectsSub) {
+      this.loadedProjectsSub.unsubscribe();
+    }
+  }
 }
